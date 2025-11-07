@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: "Backend: Build & Test (matrix .NET)"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+
+    strategy:
+      matrix:
+        dotnet-version:
+          - "9.0.x"
+          - "10.0.x"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.nuget/packages
+            ~/.local/share/NuGet/v3-cache
+          key: nuget-packages-${{ runner.os }}-sha-${{ hashFiles('backend/**/**.*proj', 'backend/**/packages.lock.json') }}-dotnet-${{ matrix.dotnet-version }}
+          restore-keys: |
+            nuget-packages-${{ runner.os }}-
+
+      - name: Restore .NET dependencies
+        run: dotnet restore backend/Fastasys.sln
+
+      - name: Build .NET solution
+        run: dotnet build backend/Fastasys.sln --no-restore -c Release
+
+      - name: Run .NET tests (produce TRX)
+        run: |
+          mkdir -p artifacts/backend-test-results
+          dotnet test backend/Fastasys.sln --no-build -c Release --logger "trx;LogFileName=backend-test-results-${{ matrix.dotnet-version }}.trx" --results-directory ./artifacts/backend-test-results
+
+      - name: Upload backend test results (TRX)
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results-${{ matrix.dotnet-version }}
+          path: artifacts/backend-test-results
+
+      - name: Note about JUnit conversion
+        run: |
+          echo "If you want JUnit test reports (recommended for some CI integrations),"
+          echo "either add a JUnit test-logger package to the test projects (preferred),"
+          echo "or add a TRX->JUnit conversion step here using a converter (e.g. a dotnet global tool like trx2junit)."
+          echo "I left conversion out for now to avoid adding assumptions about tools."
+
+  frontend:
+    name: "Frontend: Build & Test (Angular)"
+    runs-on: ubuntu-latest
+    needs: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Cache frontend node_modules
+        uses: actions/cache@v4
+        with:
+          path: frontend/fastasys-app/node_modules
+          key: node-modules-${{ runner.os }}-sha-${{ hashFiles('frontend/fastasys-app/package-lock.json', 'frontend/fastasys-app/package.json') }}
+          restore-keys: node-modules-${{ runner.os }}-
+
+      - name: Install frontend dependencies
+        working-directory: frontend/fastasys-app
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend/fastasys-app
+        run: npm run build --if-present
+
+      - name: Run frontend tests
+        working-directory: frontend/fastasys-app
+        run: |
+          npm test --if-present
+
+      - name: Upload frontend build artifact
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/fastasys-app/dist
+
+      - name: Upload frontend test results (if any)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-logs
+          path: frontend/fastasys-app/test-results

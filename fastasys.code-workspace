@@ -1,25 +1,11 @@
 {
   "folders": [
     {
-      "name": "Backend (.NET)",
-      "path": "backend"
-    },
-    {
-      "name": "Frontend (Angular)",
-      "path": "frontend/fastasys-app"
-    },
-    {
-      "name": "Root",
+      "name": "Fastasys",
       "path": "."
     }
   ],
   "settings": {
-    "files.exclude": {
-      "**/node_modules": true,
-      "**/bin": true,
-      "**/obj": true,
-      "**/.git": true
-    },
     "search.exclude": {
       "**/node_modules": true,
       "**/bin": true,
@@ -48,10 +34,8 @@
     "recommendations": [
       "ms-dotnettools.csharp",
       "ms-dotnettools.csdevkit",
-      "angular.ng-template",
-      "esbenp.prettier-vscode",
-      "dbaeumer.vscode-eslint",
-      "vitest.explorer"
+      "github.vscode-github-actions",
+      "redhat.vscode-yaml"
     ]
   },
   "tasks": {
@@ -109,10 +93,7 @@
       },
       {
         "label": "Build All",
-        "dependsOn": [
-          "Build Backend",
-          "Build Frontend"
-        ],
+        "dependsOn": ["Build Backend", "Build Frontend"],
         "group": {
           "kind": "build",
           "isDefault": true
@@ -120,10 +101,7 @@
       },
       {
         "label": "Test All",
-        "dependsOn": [
-          "Test Backend",
-          "Test Frontend"
-        ],
+        "dependsOn": ["Test Backend", "Test Frontend"],
         "group": {
           "kind": "test",
           "isDefault": true
