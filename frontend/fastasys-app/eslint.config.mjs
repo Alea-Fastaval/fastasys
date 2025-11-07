@@ -28,8 +28,6 @@ export default [
       '@angular-eslint': angular,
     },
     rules: {
-      ...eslint.configs.recommended.rules,
-      ...tseslint.configs.recommended.rules,
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -59,8 +57,6 @@ export default [
     plugins: {
       '@angular-eslint/template': angularTemplate,
     },
-    rules: {
-      ...angularTemplate.configs.recommended.rules,
-    },
+    rules: {},
   },
 ];

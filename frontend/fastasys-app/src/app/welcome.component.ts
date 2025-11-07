@@ -10,7 +10,7 @@ import { CardModule } from 'primeng/card';
     <div class="welcome-container">
       <p-card header="Welcome to Fastasys" [style]="{ width: '500px' }">
         <p>
-          This is a modern mono-repo with .NET 9 backend and Angular 20.3 frontend.
+          This is a modern mono-repo with .NET 9 backend and Angular 20 frontend.
         </p>
         <p>
           PrimeNG components are now available for use throughout the application.
