@@ -38,10 +38,16 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+To execute unit tests with [Vitest](https://vitest.dev/), use the following commands:
 
 ```bash
-ng test
+npm test
+```
+
+For watch mode:
+
+```bash
+npm run test:watch
 ```
 
 ## Running end-to-end tests
