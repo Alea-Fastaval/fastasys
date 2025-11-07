@@ -1,4 +1,4 @@
-# FastasysApp
+# Fastasys
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
 
@@ -38,16 +38,10 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running unit tests
 
-To execute unit tests with [Vitest](https://vitest.dev/), use the following commands:
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
 ```bash
-npm test
-```
-
-For watch mode:
-
-```bash
-npm run test:watch
+ng test
 ```
 
 ## Running end-to-end tests

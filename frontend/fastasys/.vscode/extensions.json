@@ -4,7 +4,6 @@
     "angular.ng-template",
     "idered.npm",
     "angular.ng-template",
-    "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "vitest.explorer"
   ]
