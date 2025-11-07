@@ -27,10 +27,17 @@ fastasys/
 
 ### Frontend
 - **Angular 20.3.9**: Latest Angular framework
+- **PrimeNG 20.3.0**: UI component library with Aura theme
 - **TypeScript 5.9**: Static typing for JavaScript
 - **SCSS**: Stylesheet preprocessor
 - **Vitest**: Fast unit test framework
+- **ESLint**: Code linting and quality
 - **RxJS**: Reactive programming library
+
+### Development Tools
+- **.editorconfig**: Unified editor configuration (2 spaces indentation)
+- **VS Code workspace**: Multi-root workspace setup
+- **ESLint**: TypeScript and HTML linting for Angular
 
 ## Getting Started
 
@@ -108,6 +115,16 @@ npm test
 #### Run tests in watch mode:
 ```bash
 npm run test:watch
+```
+
+#### Lint code:
+```bash
+npm run lint
+```
+
+#### Fix linting issues:
+```bash
+npm run lint:fix
 ```
 
 ## Development Workflow
