@@ -86,7 +86,7 @@ cd Fastasys.Api
 dotnet run
 ```
 
-The API will be available at `https://localhost:5001` (HTTPS) and `http://localhost:5000` (HTTP).
+The API will be available at `https://localhost:5000` (HTTPS).
 
 ### Frontend Setup
 

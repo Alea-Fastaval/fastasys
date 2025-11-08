@@ -1,24 +1,58 @@
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
 
-builder.WebHost.ConfigureKestrel(options =>
+builder.Services.AddCors(options =>
 {
-  options.ListenLocalhost(5000);
-  options.ListenLocalhost(5001, listenOptions => { listenOptions.UseHttps(); });
+  options.AddPolicy("AllowAngularDev", policy =>
+  {
+    policy.WithOrigins("http://localhost:4200")
+          .AllowAnyMethod()
+          .AllowAnyHeader()
+          .AllowCredentials();
+  });
+});
+
+// Configure Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+  options.SwaggerDoc("v1", new OpenApiInfo
+  {
+    Version = "v1",
+    Title = "Fastasys API",
+    Description = "API for Fastaval event management system",
+    Contact = new OpenApiContact
+    {
+      Name = "Fastaval IT",
+      Url = new Uri("https://fastasys.fastaval.dk")
+    }
+  });
+
+  // Enable annotations
+  options.EnableAnnotations();
 });
 
 var app = builder.Build();
 
+app.UseCors("AllowAngularDev");
+
 if (app.Environment.IsDevelopment())
 {
-  app.MapOpenApi();
+  app.UseSwagger();
+  app.UseSwaggerUI(options =>
+  {
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Fastasys API v1");
+    options.RoutePrefix = string.Empty;
+  });
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-app.MapGet("/", () => "hello");
 
-app.Run();
+app.MapControllers();
+
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
+await app.RunAsync();
