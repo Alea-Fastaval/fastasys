@@ -17,19 +17,10 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": {
-              "base": "dist",
-              "browser": ""
-            },
-
+            "outputPath": { "base": "dist", "browser": "" },
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+            "assets": [{ "glob": "**/*", "input": "public" }],
             "styles": ["node_modules/primeicons/primeicons.css", "src/styles.scss"]
           },
           "configurations": {
@@ -46,13 +37,10 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": { "proxyConfig": "proxy.conf.json" },
           "configurations": {
-            "production": {
-              "buildTarget": "fastasys:build:production"
-            },
-            "development": {
-              "buildTarget": "fastasys:build:development"
-            }
+            "production": { "buildTarget": "fastasys:build:production" },
+            "development": { "buildTarget": "fastasys:build:development" }
           },
           "defaultConfiguration": "development"
         },
@@ -66,14 +54,10 @@
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
-          }
+          "options": { "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"] }
         }
       }
     }
   },
-  "cli": {
-    "schematicCollections": ["angular-eslint"]
-  }
+  "cli": { "schematicCollections": ["angular-eslint"] }
 }

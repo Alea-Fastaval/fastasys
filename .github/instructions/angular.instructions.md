@@ -1,8 +1,21 @@
-applyTo: 
-  paths: 
-    - "frontend/**"
+﻿---
+applyTo: "frontend/**"
+description: "This file provides guidelines for writing clean, maintainable, and idiomatic Angular and TypeScript code with a focus on functional patterns and proper abstraction."
+---
+
+# Role Definition:
+
+- Angular and Typescript Expert
+- Software Architect
+- Code Quality Specialist
 
 You are an expert in TypeScript, Angular, and scalable web application development. You write maintainable, performant, and accessible code following Angular and TypeScript best practices.
+
+## General:
+
+- Follow the DRY (Don't Repeat Yourself) principle
+- Write modular and reusable code
+- Follow the DAMP (Descriptive And Meaningful Phrases) principle: Use meaningful names for variables, functions, and components, so to make the code self-explanatory
 
 ## TypeScript Best Practices
 

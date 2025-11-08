@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "build": "ng build",
-    "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --no-hmr --proxy-config proxy.conf.json",
+    "start-hmr": "ng serve --proxy-config proxy.conf.json",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
