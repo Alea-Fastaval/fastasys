@@ -1,8 +1,15 @@
 {
   "folders": [
     {
-      "name": "Fastasys",
       "path": "."
+    },
+    {
+      "name": "Backend (.NET)",
+      "path": "backend"
+    },
+    {
+      "name": "Frontend (Angular)",
+      "path": "frontend"
     }
   ],
   "settings": {

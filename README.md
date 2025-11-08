@@ -10,8 +10,7 @@ fastasys/
 │   ├── Fastasys.Api/          # Web API project
 │   ├── Fastasys.Api.Tests/    # Test project with Shouldly
 │   └── Fastasys.sln           # Solution file
-├── frontend/                   # Frontend applications
-│   └── fastasys-app/          # Angular 20.3 application with Vitest
+├── frontend/                   # Angular 20.3 application with Vitest
 ├── .vscode/                    # VS Code settings (if needed)
 ├── fastasys.code-workspace    # VS Code workspace file
 └── README.md                   # This file
@@ -20,12 +19,14 @@ fastasys/
 ## Technology Stack
 
 ### Backend
+
 - **.NET 9.0**: Latest stable .NET version
 - **ASP.NET Core Web API**: RESTful API framework
 - **xUnit**: Testing framework
 - **Shouldly**: Assertion library for more readable tests
 
 ### Frontend
+
 - **Angular 20.3.9**: Latest Angular framework
 - **PrimeNG 20.3.0**: UI component library with Aura theme
 - **TypeScript 5.9**: Static typing for JavaScript
@@ -35,6 +36,7 @@ fastasys/
 - **RxJS**: Reactive programming library
 
 ### Development Tools
+
 - **.editorconfig**: Unified editor configuration (2 spaces indentation)
 - **VS Code workspace**: Multi-root workspace setup
 - **ESLint**: TypeScript and HTML linting for Angular
@@ -50,6 +52,7 @@ fastasys/
 ### Opening the Project
 
 1. Open the workspace file in VS Code:
+
    ```bash
    code fastasys.code-workspace
    ```
@@ -65,16 +68,19 @@ cd backend
 ```
 
 #### Build the backend:
+
 ```bash
 dotnet build
 ```
 
 #### Run tests:
+
 ```bash
 dotnet test
 ```
 
 #### Run the API:
+
 ```bash
 cd Fastasys.Api
 dotnet run
@@ -87,15 +93,17 @@ The API will be available at `https://localhost:5001` (HTTPS) and `http://localh
 Navigate to the frontend application directory:
 
 ```bash
-cd frontend/fastasys-app
+cd frontend
 ```
 
 #### Install dependencies:
+
 ```bash
 npm install
 ```
 
 #### Run the development server:
+
 ```bash
 npm start
 ```
@@ -103,26 +111,31 @@ npm start
 The application will be available at `http://localhost:4200`.
 
 #### Build for production:
+
 ```bash
 npm run build
 ```
 
 #### Run tests:
+
 ```bash
 npm test
 ```
 
 #### Run tests in watch mode:
+
 ```bash
 npm run test:watch
 ```
 
 #### Lint code:
+
 ```bash
 npm run lint
 ```
 
 #### Fix linting issues:
+
 ```bash
 npm run lint:fix
 ```
@@ -144,6 +157,7 @@ The workspace includes pre-configured tasks accessible via `Ctrl+Shift+B` (Windo
 ### Testing
 
 #### Backend Testing
+
 The backend uses **xUnit** with **Shouldly** for more expressive assertions:
 
 ```csharp
@@ -158,13 +172,14 @@ public void Test_Example()
 ```
 
 #### Frontend Testing
+
 The frontend uses **Vitest** for fast unit testing:
 
 ```typescript
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from "vitest";
 
-describe('Example Test', () => {
-  it('should pass', () => {
+describe("Example Test", () => {
+  it("should pass", () => {
     expect(2 + 2).toBe(4);
   });
 });
@@ -173,24 +188,27 @@ describe('Example Test', () => {
 ## Project Commands Summary
 
 ### Backend
-| Command | Description |
-|---------|-------------|
-| `dotnet build` | Build the solution |
-| `dotnet test` | Run all tests |
-| `dotnet run` | Run the API (from Fastasys.Api directory) |
-| `dotnet watch` | Run with hot reload |
+
+| Command        | Description                               |
+| -------------- | ----------------------------------------- |
+| `dotnet build` | Build the solution                        |
+| `dotnet test`  | Run all tests                             |
+| `dotnet run`   | Run the API (from Fastasys.Api directory) |
+| `dotnet watch` | Run with hot reload                       |
 
 ### Frontend
-| Command | Description |
-|---------|-------------|
-| `npm start` | Start development server |
-| `npm run build` | Build for production |
-| `npm test` | Run tests once |
-| `npm run test:watch` | Run tests in watch mode |
+
+| Command              | Description              |
+| -------------------- | ------------------------ |
+| `npm start`          | Start development server |
+| `npm run build`      | Build for production     |
+| `npm test`           | Run tests once           |
+| `npm run test:watch` | Run tests in watch mode  |
 
 ## Best Practices
 
 ### Backend
+
 - Follow Microsoft's [C# Coding Conventions](https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
 - Use dependency injection for service management
 - Write tests using Shouldly for readable assertions
@@ -198,6 +216,7 @@ describe('Example Test', () => {
 - Use async/await for I/O operations
 
 ### Frontend
+
 - Follow [Angular Style Guide](https://angular.dev/style-guide)
 - Use standalone components (Angular 20 default)
 - Write tests with Vitest for fast feedback
