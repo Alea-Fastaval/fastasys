@@ -59,7 +59,7 @@ jobs:
         if: ${{ matrix.task == 'Test' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: api.tests/TestResults/coverage.cobertura.xml
+          filename: backend/api.tests/TestResults/coverage.cobertura.xml
           badge: true
           format: markdown
           output: both
@@ -160,7 +160,7 @@ jobs:
         if: ${{ matrix.task == 'Test' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: /coverage/cobertura-coverage.xml
+          filename: frontend/coverage/cobertura-coverage.xml
           badge: true
           format: markdown
           output: both
@@ -171,8 +171,8 @@ jobs:
         with:
           name: frontend-tests
           path: |
-            /coverage/frontend-ctrf.json
-            /coverage
+            frontend/coverage/frontend-ctrf.json
+            frontend/coverage
             code-coverage-results.md
           if-no-files-found: warn
           retention-days: 14
