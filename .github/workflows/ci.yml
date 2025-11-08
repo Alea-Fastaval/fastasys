@@ -25,7 +25,7 @@ env:
 
 jobs:
   backend:
-    name: "Backend: Build & Test"
+    name: "Backend"
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     strategy:
@@ -37,16 +37,11 @@ jobs:
         working-directory: backend
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 9.0.x
-
-      - name: Restore dependencies
-        run: dotnet restore backend.sln
+      - run: dotnet restore backend.sln
 
       - name: Build
         if: ${{ matrix.task == 'Build' }}
@@ -69,7 +64,7 @@ jobs:
           format: markdown
           output: both
 
-      - name: Generate CTRF (Backend)
+      - name: Generate CTRF
         if: ${{ matrix.task == 'Test' }}
         shell: bash
         run: |
@@ -83,7 +78,7 @@ jobs:
           DotnetCtrfJsonReporter -p "$TRX" -f backend-ctrf.json -d ctrf -t xunit || DotnetCtrfJsonReporter -p "$TRX" -f backend-ctrf.json -d ctrf
           ls -R ctrf | head -n 50 || true
 
-      - name: Upload backend artifacts (tests & coverage)
+      - name: Upload artifacts
         if: ${{ matrix.task == 'Test' }}
         uses: actions/upload-artifact@v5
         with:
@@ -97,7 +92,7 @@ jobs:
           retention-days: 14
           compression-level: 6
 
-      - name: Publish Test Report (Backend)
+      - name: Publish Test Report
         if: ${{ matrix.task == 'Test' }}
         uses: ctrf-io/github-test-reporter@v1
         with:
@@ -117,7 +112,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   frontend:
-    name: "Frontend: Build & Test"
+    name: "Frontend"
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     strategy:
@@ -141,15 +136,15 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
-      - name: Run frontend linting
+      - name: Linting
         if: ${{ matrix.task == 'Lint' }}
         run: npm run lint
 
-      - name: Run frontend formatting check
+      - name: Formatting check
         if: ${{ matrix.task == 'Lint' }}
         run: npm run format:check
 
-      - name: Build frontend
+      - name: Build
         if: ${{ matrix.task == 'Build' }}
         run: npm run build
 
@@ -157,27 +152,27 @@ jobs:
         if: ${{ matrix.task == 'Security' }}
         run: npm run validate
 
-      - name: Run frontend tests
+      - name: Tests
         if: ${{ matrix.task == 'Test' }}
         run: npm run test
 
-      - name: Coverage Summary (Frontend)
+      - name: Coverage Summary
         if: ${{ matrix.task == 'Test' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: frontend/coverage/cobertura-coverage.xml
+          filename: /coverage/cobertura-coverage.xml
           badge: true
           format: markdown
           output: both
 
-      - name: Upload frontend artifacts (tests & coverage)
+      - name: Upload artifacts
         if: ${{ matrix.task == 'Test' }}
         uses: actions/upload-artifact@v5
         with:
           name: frontend-tests
           path: |
-            frontend/coverage/frontend-ctrf.json
-            frontend/coverage
+            /coverage/frontend-ctrf.json
+            /coverage
             code-coverage-results.md
           if-no-files-found: warn
           retention-days: 14
