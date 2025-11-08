@@ -62,13 +62,12 @@ jobs:
         uses: actions/setup-node@v5
         with:
           cache: "npm"
-          # point the cache action at the frontend package lock file
-          cache-dependency-path: frontend/fastasys/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install frontend dependencies
-        working-directory: frontend/fastasys
+        working-directory: frontend
         run: npm ci
 
       - name: Build frontend
-        working-directory: frontend/fastasys
+        working-directory: frontend
         run: npm run build
