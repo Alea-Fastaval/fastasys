@@ -53,9 +53,6 @@ jobs:
   frontend:
     name: "Frontend: Build & Test (Angular)"
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend/fastasys
 
     steps:
       - name: Checkout repository
@@ -65,9 +62,13 @@ jobs:
         uses: actions/setup-node@v5
         with:
           cache: "npm"
+          # point the cache action at the frontend package lock file
+          cache-dependency-path: frontend/fastasys/package-lock.json
 
       - name: Install frontend dependencies
+        working-directory: frontend/fastasys
         run: npm ci
 
       - name: Build frontend
+        working-directory: frontend/fastasys
         run: npm run build
