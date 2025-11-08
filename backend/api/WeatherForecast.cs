@@ -1,5 +1,3 @@
-using System;
-
 namespace api;
 
 public class WeatherForecast
