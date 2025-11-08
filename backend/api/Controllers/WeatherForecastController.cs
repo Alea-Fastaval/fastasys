@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using api;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,8 +7,7 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-  private static readonly string[] Summaries =
-  [
+  private static readonly string[] Summaries = [
       "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
   ];
 
