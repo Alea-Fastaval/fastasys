@@ -7,7 +7,9 @@
     "start": "ng serve",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
-    "lint:fix": "ng lint --fix"
+    "lint:fix": "ng lint --fix",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "private": true,
   "dependencies": {
@@ -17,6 +19,7 @@
     "@angular/forms": "^20.3.10",
     "@angular/platform-browser": "^20.3.10",
     "@angular/router": "^20.3.10",
+    "@primeuix/themes": "^1.2.5",
     "primeicons": "^7.0.0",
     "primeng": "^20.3.0",
     "rxjs": "^7.8.2",
@@ -29,7 +32,9 @@
     "@eslint/js": "^9.39.1",
     "angular-eslint": "20.5.1",
     "eslint": "^9.39.1",
+    "jsdom": "^27.1.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.3"
+    "typescript-eslint": "^8.46.3",
+    "vitest": "^3.2.4"
   }
 }

@@ -59,7 +59,6 @@ export default defineConfig(
   },
   {
     files: ['**/*.spec.ts', '**/*.test.ts'],
-    rules: {
-    },
+    rules: {},
   },
 );
