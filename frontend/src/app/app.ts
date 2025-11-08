@@ -17,7 +17,7 @@ interface WeatherForecast {
     <div class="content">
       <div class="topbar"></div>
       <main class="welcome">
-        <h1>Welcome to Fastasys</h1>
+        <h1>{{ welcome() }}</h1>
       </main>
       <div class="page">
         <router-outlet />
@@ -43,7 +43,7 @@ interface WeatherForecast {
 })
 export class App {
   private readonly http = inject(HttpService);
-  protected readonly title = signal('fastasys');
+  protected readonly welcome = signal('Welcome to Fastasys');
 
   constructor() {
     this.http.get<WeatherForecast[]>('weatherforecast').subscribe(data => {
