@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   backend:
-    name: "Backend: Build & Test (matrix .NET)"
+    name: "Backend: Build & Test"
     runs-on: ubuntu-latest
 
     steps:
@@ -29,15 +29,15 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Restore .NET dependencies
-        run: dotnet restore backend/Fastasys.sln
+        run: dotnet restore backend/backend.sln
 
       - name: Build .NET solution
-        run: dotnet build backend/Fastasys.sln --no-restore -c Release
+        run: dotnet build backend/backend.sln --no-restore -c Release
 
       - name: Run .NET tests (produce TRX)
         run: |
           mkdir -p artifacts/backend-test-results
-          dotnet test backend/Fastasys.sln --no-build -c Release --logger "trx;LogFileName=backend-test-results.trx" --results-directory ./artifacts/backend-test-results
+          dotnet test backend/backend.sln --no-build -c Release --logger "trx;LogFileName=backend-test-results.trx" --results-directory ./artifacts/backend-test-results
 
       - name: Upload backend test results (TRX)
         uses: actions/upload-artifact@v5
@@ -46,7 +46,7 @@ jobs:
           path: artifacts/backend-test-results
 
   frontend:
-    name: "Frontend: Build & Test (Angular)"
+    name: "Frontend: Build & Test"
     runs-on: ubuntu-latest
 
     steps:
