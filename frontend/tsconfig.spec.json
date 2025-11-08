@@ -5,5 +5,5 @@
   "compilerOptions": {
     "outDir": "./out-tsc/spec"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/app/**/*.spec.ts"]
 }

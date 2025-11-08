@@ -28,15 +28,15 @@ interface WeatherForecast {
   `,
   styles: `
     main.welcome {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #d6d7da;
-    font-family: Roboto, Helvetica, Arial, sans-serif;
-    padding: 1rem;
-    box-sizing: border-box;
-  }
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #d6d7da;
+      font-family: Roboto, Helvetica, Arial, sans-serif;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, ToastModule, ConfirmDialogModule],
@@ -47,7 +47,7 @@ export class App {
 
   constructor() {
     this.http.get<WeatherForecast[]>('weatherforecast').subscribe(data => {
-      console.log('Weather forecast data:', data);
+      console.warn('Weather forecast data:', data);
     });
   }
 }

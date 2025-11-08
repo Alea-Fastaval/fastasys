@@ -3,13 +3,16 @@
   "version": "0.0.0",
   "scripts": {
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "start": "ng serve --no-hmr --proxy-config proxy.conf.json",
     "start-hmr": "ng serve --proxy-config proxy.conf.json",
-    "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
-    "test": "vitest --run",
-    "test:watch": "vitest"
+    "test": "vitest --run --coverage",
+    "test:watch": "vitest",
+    "validate": "npm audit --audit-level=high",
+    "format": "prettier --write \"src/**/*.{ts,js,json,css,scss,html,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json,css,scss,html,md}\""
   },
   "private": true,
   "dependencies": {
@@ -30,9 +33,11 @@
     "@angular/cli": "^20.3.9",
     "@angular/compiler-cli": "^20.3.10",
     "@eslint/js": "^9.39.1",
+    "@vitest/coverage-v8": "^3.2.4",
     "angular-eslint": "20.5.1",
     "eslint": "^9.39.1",
     "jsdom": "^27.1.0",
+    "prettier": "3.6.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.3",
     "vitest": "^3.2.4"
