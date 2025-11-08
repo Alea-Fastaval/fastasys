@@ -1,7 +1,8 @@
 {
   "folders": [
     {
-      "path": "."
+      "path": ".",
+      "name": "Root"
     },
     {
       "name": "Backend (.NET)",
@@ -13,11 +14,19 @@
     }
   ],
   "settings": {
-    "search.exclude": {
-      "**/node_modules": true,
+    "files.exclude": {
       "**/bin": true,
       "**/obj": true,
-      "**/dist": true
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.angular": true
+    },
+    "search.exclude": {
+      "**/bin": true,
+      "**/obj": true,
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.angular": true
     },
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -26,10 +35,34 @@
   },
   "extensions": {
     "recommendations": [
-      "ms-dotnettools.csharp",
-      "ms-dotnettools.csdevkit",
+      "angular.ng-template",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
       "github.vscode-github-actions",
-      "redhat.vscode-yaml"
+      "idered.npm",
+      "ms-dotnettools.csdevkit",
+      "ms-dotnettools.csharp",
+      "redhat.vscode-yaml",
+      "vitest.explorer"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "ng serve",
+        "type": "chrome",
+        "request": "launch",
+        "preLaunchTask": "npm: start",
+        "url": "http://localhost:4200/"
+      },
+      {
+        "name": "ng test",
+        "type": "chrome",
+        "request": "launch",
+        "preLaunchTask": "npm: test",
+        "url": "http://localhost:9876/debug.html"
+      }
     ]
   },
   "tasks": {

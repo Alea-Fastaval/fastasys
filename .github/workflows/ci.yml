@@ -18,11 +18,6 @@ jobs:
   backend:
     name: "Backend: Build & Test (matrix .NET)"
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet-version:
-          - "9.0.x"
-          - "10.0.x"
 
     steps:
       - name: Checkout repository
@@ -31,7 +26,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: 9.0.x
 
       - name: Restore .NET dependencies
         run: dotnet restore backend/Fastasys.sln
@@ -42,12 +37,12 @@ jobs:
       - name: Run .NET tests (produce TRX)
         run: |
           mkdir -p artifacts/backend-test-results
-          dotnet test backend/Fastasys.sln --no-build -c Release --logger "trx;LogFileName=backend-test-results-${{ matrix.dotnet-version }}.trx" --results-directory ./artifacts/backend-test-results
+          dotnet test backend/Fastasys.sln --no-build -c Release --logger "trx;LogFileName=backend-test-results.trx" --results-directory ./artifacts/backend-test-results
 
       - name: Upload backend test results (TRX)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
-          name: backend-test-results-${{ matrix.dotnet-version }}
+          name: backend-test-results
           path: artifacts/backend-test-results
 
   frontend:
