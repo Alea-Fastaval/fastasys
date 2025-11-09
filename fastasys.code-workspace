@@ -1,0 +1,139 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "Root"
+    },
+    {
+      "name": "Backend (.NET)",
+      "path": "backend"
+    },
+    {
+      "name": "Frontend (Angular)",
+      "path": "frontend"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/bin": true,
+      "**/obj": true,
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.angular": true
+    },
+    "search.exclude": {
+      "**/bin": true,
+      "**/obj": true,
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.angular": true
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "angular.ng-template",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "github.vscode-github-actions",
+      "idered.npm",
+      "ms-dotnettools.csdevkit",
+      "ms-dotnettools.csharp",
+      "redhat.vscode-yaml",
+      "vitest.explorer"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "ng serve",
+        "type": "chrome",
+        "request": "launch",
+        "preLaunchTask": "npm: start",
+        "url": "http://localhost:4200/"
+      },
+      {
+        "name": "ng test",
+        "type": "chrome",
+        "request": "launch",
+        "preLaunchTask": "npm: test",
+        "url": "http://localhost:9876/debug.html"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build Backend",
+        "type": "shell",
+        "command": "dotnet build",
+        "options": {
+          "cwd": "${workspaceFolder:Backend (.NET)}"
+        },
+        "group": "build",
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "Test Backend",
+        "type": "shell",
+        "command": "dotnet test",
+        "options": {
+          "cwd": "${workspaceFolder:Backend (.NET)}"
+        },
+        "group": "test",
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "Build Frontend",
+        "type": "shell",
+        "command": "npm run build",
+        "options": {
+          "cwd": "${workspaceFolder:Frontend (Angular)}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Test Frontend",
+        "type": "shell",
+        "command": "npm test",
+        "options": {
+          "cwd": "${workspaceFolder:Frontend (Angular)}"
+        },
+        "group": "test",
+        "problemMatcher": []
+      },
+      {
+        "label": "Start Frontend Dev Server",
+        "type": "shell",
+        "command": "npm start",
+        "options": {
+          "cwd": "${workspaceFolder:Frontend (Angular)}"
+        },
+        "isBackground": true,
+        "problemMatcher": []
+      },
+      {
+        "label": "Build All",
+        "dependsOn": ["Build Backend", "Build Frontend"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Test All",
+        "dependsOn": ["Test Backend", "Test Frontend"],
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        }
+      }
+    ]
+  }
+}

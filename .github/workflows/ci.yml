@@ -1,0 +1,198 @@
+name: Build, Test and Security Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  packages: read
+  id-token: write
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  backend:
+    name: "Backend"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [Build, Test, Security]
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 9.0.x
+      - run: dotnet restore backend.sln
+
+      - name: Build
+        if: ${{ matrix.task == 'Build' }}
+        run: dotnet build backend.sln --no-restore -c Release
+
+      - name: Security Audit
+        if: ${{ matrix.task == 'Security' }}
+        run: dotnet list package --vulnerable
+
+      - name: Test
+        if: ${{ matrix.task == 'Test' }}
+        run: dotnet test -c Release --logger "trx;LogFileName=backend-tests.trx" --no-restore
+
+      - name: Generate Coverage Summary
+        if: ${{ matrix.task == 'Test' }}
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: backend/api.tests/TestResults/coverage.cobertura.xml
+          badge: true
+          format: markdown
+          output: both
+
+      - name: Generate CTRF
+        if: ${{ matrix.task == 'Test' }}
+        shell: bash
+        run: |
+          mkdir -p ctrf
+          echo "Installing DotnetCtrfJsonReporter";
+          dotnet tool install -g DotnetCtrfJsonReporter;
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH;
+          TRX=backend/api.tests/TestResults/backend-tests.trx
+          if [ ! -f "$TRX" ]; then echo "No TRX file found to convert"; exit 0; fi
+          echo "Found TRX: $TRX";
+          DotnetCtrfJsonReporter -p "$TRX" -f backend-ctrf.json -d ctrf -t xunit || DotnetCtrfJsonReporter -p "$TRX" -f backend-ctrf.json -d ctrf
+          ls -R ctrf | head -n 50 || true
+
+      - name: Upload artifacts
+        if: ${{ matrix.task == 'Test' }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: backend-tests
+          path: |
+            ctrf/backend-ctrf.json
+            backend/api.tests/TestResults/backend-tests.trx
+            backend/api.tests/TestResults/coverage.cobertura.xml
+            code-coverage-results.md
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+
+      - name: Publish Test Report
+        if: ${{ matrix.task == 'Test' }}
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: ctrf/backend-ctrf.json
+          summary-report: true
+          failed-report: true
+          github-report: true
+          status-check: true
+          status-check-name: "Backend Test Results"
+          annotate: true
+          flaky-report: true
+          insights-report: true
+          previous-results-report: true
+          fail-rate-report: true
+          report-order: "summary-report,failed-report,fail-rate-report,flaky-report,insights-report,previous-results-report"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  frontend:
+    name: "Frontend"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [Lint, Security, Build, Test]
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Linting
+        if: ${{ matrix.task == 'Lint' }}
+        run: npm run lint
+
+      - name: Formatting check
+        if: ${{ matrix.task == 'Lint' }}
+        run: npm run format:check
+
+      - name: Build
+        if: ${{ matrix.task == 'Build' }}
+        run: npm run build
+
+      - name: Security audit
+        if: ${{ matrix.task == 'Security' }}
+        run: npm run validate
+
+      - name: Tests
+        if: ${{ matrix.task == 'Test' }}
+        run: npm run test
+
+      - name: Coverage Summary
+        if: ${{ matrix.task == 'Test' }}
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: frontend/coverage/cobertura-coverage.xml
+          badge: true
+          format: markdown
+          output: both
+
+      - name: Upload artifacts
+        if: ${{ matrix.task == 'Test' }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: frontend-tests
+          path: |
+            frontend/coverage/frontend-ctrf.json
+            frontend/coverage
+            code-coverage-results.md
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+
+      - name: Publish Test Results (Frontend)
+        if: ${{ matrix.task == 'Test' }}
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: frontend/coverage/frontend-ctrf.json
+          summary-report: true
+          failed-report: true
+          github-report: true
+          status-check: true
+          status-check-name: "Frontend Test Results"
+          annotate: true
+          flaky-report: true
+          insights-report: true
+          previous-results-report: true
+          fail-rate-report: true
+          report-order: "summary-report,failed-report,fail-rate-report,flaky-report,insights-report,previous-results-report"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
