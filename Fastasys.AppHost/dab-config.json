@@ -1,0 +1,27 @@
+{
+  "$schema": "https://github.com/Azure/data-api-builder/releases/download/v0.10.23/dab.draft.schema.json",
+  "data-source": {
+    "database-type": "mysql",
+    "connection-string": "@env('ConnectionStrings__fasta2026')"
+  },
+  "runtime": {
+    "rest": {
+      "enabled": true,
+      "path": "/api"
+    },
+    "graphql": {
+      "enabled": true,
+      "path": "/graphql"
+    }
+  },
+	{
+	  "autoentities": {
+		"my-def": {
+		  "patterns": {
+			"include": [ "%" ],
+			"name": "{object}"
+		  }
+		}
+	  }
+	}
+}

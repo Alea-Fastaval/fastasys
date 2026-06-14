@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Fastasys.ApiService/Fastasys.ApiService.csproj" />
+  <Project Path="Fastasys.AppHost/Fastasys.AppHost.csproj" />
+  <Project Path="Fastasys.ServiceDefaults/Fastasys.ServiceDefaults.csproj" />
+  <Project Path="Fastasys.Tests/Fastasys.Tests.csproj" />
+</Solution>
