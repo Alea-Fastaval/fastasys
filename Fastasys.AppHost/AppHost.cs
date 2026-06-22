@@ -17,7 +17,7 @@ var apiService = builder.AddProject<Projects.Fastasys_ApiService>("apiservice")
 builder.AddJavaScriptApp("angular", "../frontend", runScriptName: "start")
     .WithReference(apiService)
     .WaitFor(apiService)
-    .WithHttpEndpoint(env: "PORT")
+    .WithHttpEndpoint(port: 4200, isProxied: false)
     .WithExternalHttpEndpoints()
     .PublishAsDockerFile();
 
