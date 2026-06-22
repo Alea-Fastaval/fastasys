@@ -1,6 +1,10 @@
 {
     "recommendations": [
         "angular.ng-template",
-        "redhat.vscode-xml"
+        "redhat.vscode-xml",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "davidanson.vscode-markdownlint",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint"
     ]
 }
