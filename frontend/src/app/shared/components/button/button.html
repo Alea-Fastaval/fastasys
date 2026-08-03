@@ -1,13 +1,7 @@
-<p-button
-  [size]="size()"
-  [text]="text()"
-  [plain]="plain()"
-  [label]="label()"
-  [variant]="variant()"
-  [loading]="loading()"
-  [iconPos]="iconPos()"
-  [rounded]="rounded()"
-  [severity]="severity()"
-  [disabled]="disabled()"
-  [icon]="icon() ? 'pi ' + icon() : undefined"
-/>
+<button mat-flat-button [disabled]="disabled()" [color]="color()">
+  @if (icon()) {
+  <mat-icon>{{ icon() }}</mat-icon>
+  } @if (label()) {
+  <span>{{ label() }}</span>
+  }
+</button>

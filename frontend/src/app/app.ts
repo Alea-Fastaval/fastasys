@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpService } from '@shared/services/http';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
 
 interface WeatherForecast {
   date: string;
@@ -23,8 +21,6 @@ interface WeatherForecast {
         <router-outlet />
       </div>
     </div>
-    <p-toast [position]="'bottom-right'" />
-    <p-confirmdialog />
   `,
   styles: `
     main.welcome {
@@ -39,7 +35,7 @@ interface WeatherForecast {
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, ToastModule, ConfirmDialogModule],
+  imports: [RouterOutlet],
 })
 export class App {
   private readonly http = inject(HttpService);

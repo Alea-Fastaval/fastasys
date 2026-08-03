@@ -2,6 +2,24 @@
 
 This project consists of a .NET Aspire orchestration app, a .NET ApiService backend, and an Angular frontend.
 
+## Prerequisites & Environment Setup
+
+Before running the application, make sure your development environment has all required tools installed (.NET SDK 10.0, Docker/OrbStack, Node.js, npm).
+
+You can run the environment check script to verify your setup and install missing frontend packages automatically:
+
+- **macOS / Linux:**
+
+  ```bash
+  ./setup.sh
+  ```
+
+- **Windows (PowerShell):**
+
+  ```powershell
+  .\setup.ps1
+  ```
+
 ## How to Run the Project
 
 ### Running the entire project with .NET Aspire
@@ -30,7 +48,7 @@ To run the frontend service directly (outside Aspire):
 
 ```powershell
 cd frontend
-npm start
+npm run start
 ```
 
 This runs the development server on `http://localhost:4200/`.
@@ -63,10 +81,10 @@ npm install
 
 Run these commands from the `frontend` folder:
 
-- **Start development server:** `npm start`
+- **Start development server:** `npm run start`
 - **Build application:** `npm run build`
 - **Build for production:** `npm run build:prod`
 - **Lint code:** `npm run lint`
 - **Fix lint issues:** `npm run lint:fix`
-- **Run tests:** `npm test`
+- **Run tests:** `npm run test`
 - **Format code:** `npm run format`

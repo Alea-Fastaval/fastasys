@@ -21,11 +21,6 @@ describe('Button', () => {
     expect(component).toBeTruthy();
   });
 
-  it('has default inputs (iconPos)', () => {
-    // inputs are signals; read via calling them
-    expect(component.iconPos()).toBe('right');
-  });
-
   it('renders label when provided and updates when changed', () => {
     // set label via the signal's set method
     (component as any).label.set('Save changes');

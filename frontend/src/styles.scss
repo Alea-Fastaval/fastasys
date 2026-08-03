@@ -1,9 +1,18 @@
-@import 'primeicons/primeicons.css';
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$theme: mat.define-theme();
+
+:root {
+  @include mat.all-component-themes($theme);
+}
 
 html,
 body {
   height: 100%;
   margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 h1,
