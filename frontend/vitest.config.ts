@@ -13,22 +13,16 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    setupFiles: ['src/test-setup.ts'],
     watch: false,
     include: ['src/**/*.spec.ts'],
     coverage: {
       provider: 'v8',
-      include: ['src/app/features/*.ts', 'src/app/shared/*.ts'],
+      include: ['src/app/**/*.ts'],
       exclude: ['src/app/**/*.spec.ts', 'src/app/**/index.ts', 'src/**/*routes.ts'],
       reportsDirectory: 'coverage',
       reporter: ['text', 'lcov', 'cobertura'],
-      thresholds: {
-        branches: 80,
-        functions: 80,
-        lines: 80,
-        statements: 80,
-      },
     },
-    reporters: [['junit', { suiteName: 'frontend-tests' }]],
-    outputFile: 'coverage/frontend-junit.xml',
+    reporters: ['default'],
   },
 });

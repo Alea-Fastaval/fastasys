@@ -1,40 +1,25 @@
-using Microsoft.Extensions.Logging;
+using System.Net;
+using Fastasys.ApiService.Controllers;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Xunit;
 
 namespace Fastasys.Tests;
 
-public class WebTests
+public class WebTests : IClassFixture<WebApplicationFactory<AuthController>>
 {
-    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
+    private readonly WebApplicationFactory<AuthController> _factory;
+
+    public WebTests(WebApplicationFactory<AuthController> factory)
+    {
+        _factory = factory;
+    }
 
     [Fact]
-    public async Task GetWebResourceRootReturnsOkStatusCode()
+    public async Task GetActivities_ReturnsSuccessStatusCode()
     {
-        // Arrange
         var cancellationToken = TestContext.Current.CancellationToken;
-
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.Fastasys_AppHost>(cancellationToken);
-        appHost.Services.AddLogging(logging =>
-        {
-            logging.SetMinimumLevel(LogLevel.Debug);
-            // Override the logging filters from the app's configuration
-            logging.AddFilter(appHost.Environment.ApplicationName, LogLevel.Debug);
-            logging.AddFilter("Aspire.", LogLevel.Debug);
-            // To output logs to the xUnit.net ITestOutputHelper, consider adding a package from https://www.nuget.org/packages?q=xunit+logging
-        });
-        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
-        {
-            clientBuilder.AddStandardResilienceHandler();
-        });
-
-        await using var app = await appHost.BuildAsync(cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
-        await app.StartAsync(cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
-
-        // Act
-        var httpClient = app.CreateHttpClient("webfrontend");
-        await app.ResourceNotifications.WaitForResourceHealthyAsync("webfrontend", cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
-        var response = await httpClient.GetAsync("/", cancellationToken);
-
-        // Assert
+        var client = _factory.CreateClient();
+        var response = await client.GetAsync("/api/activities", cancellationToken);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }
