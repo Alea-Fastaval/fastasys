@@ -1,0 +1,140 @@
+<div class="page-container">
+  <header class="page-header">
+    <div>
+      <h1>{{ 'roles.title' | translate }}</h1>
+      <p>{{ 'roles.subtitle' | translate }}</p>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="openCreateRoleModal()">
+        <mat-icon>add_moderator</mat-icon> {{ 'roles.addRole' | translate }}
+      </button>
+    </div>
+  </header>
+
+  <!-- ROLE & ACCESS CONTROL PERMISSION MATRIX -->
+  <div class="roles-layout">
+      <!-- Sidebar list of roles -->
+      <div class="roles-sidebar">
+        <app-card [title]="'roles.systemRoles' | translate">
+          <div class="roles-list">
+            @for (role of availableRoles(); track role.id) {
+            <div class="role-item" [class.selected]="selectedRole()?.id === role.id" (click)="selectRole(role)">
+              <div class="role-item-header">
+                <strong>{{ role.name }}</strong>
+                @if (role.name === 'Admin') {
+                <app-badge variant="neutral">System</app-badge>
+                }
+              </div>
+              <span class="role-item-desc">{{ role.description }}</span>
+            </div>
+            }
+          </div>
+        </app-card>
+      </div>
+
+      <!-- Permission Matrix Table for Selected Role -->
+      <div class="matrix-main">
+        @if (selectedRole(); as role) {
+        <app-card [title]="('roles.permissionsMatrix' | translate) + ' ' + role.name" [subtitle]="role.description">
+          <div class="matrix-actions">
+            <p class="matrix-intro">{{ 'roles.matrixIntro' | translate }}</p>
+            @if (role.name !== 'Admin') {
+            <button mat-stroked-button color="warn" (click)="deleteRole(role)">
+              <mat-icon>delete</mat-icon> {{ 'roles.deleteRole' | translate }}
+            </button>
+            }
+          </div>
+
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>{{ 'roles.domainHeader' | translate }}</th>
+                <th class="text-center">{{ 'roles.viewRights' | translate }}</th>
+                <th class="text-center">{{ 'roles.editRights' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (domain of systemDomains; track domain.key) {
+              <tr>
+                <td>
+                  <div class="domain-info">
+                    <mat-icon class="domain-icon">{{ getDomainIcon(domain.key) }}</mat-icon>
+                    <div>
+                      <strong class="domain-name">{{ domain.name }}</strong>
+                      <span class="domain-key">({{ domain.key }})</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <mat-checkbox
+                    [checked]="hasPrivilege(role, domain.key + '_view')"
+                    [disabled]="role.name === 'Admin'"
+                    (change)="togglePrivilege(role, domain.key + '_view', $event.checked)"
+                  >
+                    View {{ domain.name }}
+                  </mat-checkbox>
+                </td>
+                <td class="text-center">
+                  <mat-checkbox
+                    [checked]="hasPrivilege(role, domain.key + '_edit')"
+                    [disabled]="role.name === 'Admin'"
+                    (change)="togglePrivilege(role, domain.key + '_edit', $event.checked)"
+                  >
+                    Edit/Create {{ domain.name }}
+                  </mat-checkbox>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (role.name !== 'Admin') {
+          <div class="matrix-footer">
+            <button mat-raised-button color="primary" (click)="saveRolePermissions(role)">
+              <mat-icon>save</mat-icon> {{ 'roles.savePermissions' | translate }}
+            </button>
+          </div>
+          }
+        </app-card>
+        } @else {
+        <app-card [title]="'roles.selectRole' | translate">
+          <p>{{ 'roles.selectRolePrompt' | translate }}</p>
+        </app-card>
+        }
+      </div>
+    </div>
+
+  <!-- Modal Form (Role Create) -->
+  @if (showRoleModal()) {
+  <div class="modal-backdrop" (click)="closeRoleModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <app-card [title]="'roles.addRole' | translate">
+        <form (ngSubmit)="saveNewRole()" #roleForm="ngForm">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'roles.roleName' | translate }}</mat-label>
+            <input matInput [(ngModel)]="formRole.name" name="roleName" required placeholder="e.g. GM Coordinator" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'common.description' | translate }}</mat-label>
+            <input
+              matInput
+              [(ngModel)]="formRole.description"
+              name="roleDesc"
+              required
+              placeholder="e.g. Manages game activities and GMs"
+            />
+          </mat-form-field>
+
+          <div class="modal-actions">
+            <button mat-button type="button" (click)="closeRoleModal()">{{ 'common.cancel' | translate }}</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!roleForm.form.valid">
+              {{ 'common.create' | translate }}
+            </button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  }
+</div>

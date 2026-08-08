@@ -1,0 +1,160 @@
+.page-container {
+  padding: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  h1 {
+    margin: 0;
+    font-size: 1.75rem;
+  }
+  p {
+    margin: 0.25rem 0 0 0;
+    color: #64748b;
+  }
+}
+.sub-nav-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #1e293b;
+  }
+  &.active {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+  }
+}
+.roles-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+}
+.roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.role-item {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f8fafc;
+  }
+  &.selected {
+    border-color: #3b82f6;
+    background: #eff6ff;
+  }
+}
+.role-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.role-item-desc {
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+.matrix-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+.matrix-intro {
+  margin: 0;
+  color: #475569;
+}
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+
+  th,
+  td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: #334155;
+  }
+}
+.text-center {
+  text-align: center;
+}
+.domain-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.domain-icon {
+  color: #3b82f6;
+}
+.domain-name {
+  display: block;
+}
+.domain-key {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+.matrix-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+.modal-card {
+  width: 100%;
+  max-width: 550px;
+  background: white;
+  border-radius: 12px;
+}
+.full-width {
+  width: 100%;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}

@@ -1,7 +1,7 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { User as UserInfo, AuthResponse } from '@shared/types/auth.types';
+import { AuthUser as UserInfo, AuthResponse } from '@shared/types';
 
 @Injectable({
   providedIn: 'root',

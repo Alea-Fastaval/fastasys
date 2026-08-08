@@ -1,14 +1,18 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/login/login.component';
-import { ParticipantsComponent } from './features/participants/participants.component';
-import { ActivitiesComponent } from './features/activities/activities.component';
-import { HeroForceComponent } from './features/hero-force/hero-force.component';
-import { SignupComponent } from './features/signup/signup.component';
-import { ShopComponent } from './features/shop/shop.component';
-import { ResourcesComponent } from './features/resources/resources.component';
-import { BoardgamesComponent } from './features/boardgames/boardgames.component';
-import { CommunicationsComponent } from './features/communications/communications.component';
-import { authGuard } from '@shared/guards/auth.guard';
+import { authGuard } from '@shared/guards';
+import { ActivitiesComponent } from './features/activities/activities';
+import { BoardgamesComponent } from './features/boardgames/boardgames';
+import { CommunicationsComponent } from './features/communications/communications';
+import { HeroForceComponent } from './features/hero-force/hero-force';
+import { LoginComponent } from './features/login/login';
+import { ParticipantsComponent } from './features/participants/participants';
+import { FoodComponent } from './features/resources/food/food';
+import { RoomsComponent } from './features/resources/rooms/rooms';
+import { WearComponent } from './features/resources/wear/wear';
+import { ShopComponent } from './features/shop/shop';
+import { SignupComponent } from './features/signup/signup';
+import { RolesComponent } from './features/user-management/roles/roles';
+import { UsersComponent } from './features/user-management/users/users';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'participants', pathMatch: 'full' },
@@ -18,8 +22,14 @@ export const routes: Routes = [
   { path: 'activities', component: ActivitiesComponent, canActivate: [authGuard] },
   { path: 'hero-force', component: HeroForceComponent, canActivate: [authGuard] },
   { path: 'shop', component: ShopComponent, canActivate: [authGuard] },
-  { path: 'resources', component: ResourcesComponent, canActivate: [authGuard] },
+  { path: 'resources/food', component: FoodComponent, canActivate: [authGuard] },
+  { path: 'resources/wear', component: WearComponent, canActivate: [authGuard] },
+  { path: 'resources/rooms', component: RoomsComponent, canActivate: [authGuard] },
+  { path: 'resources', redirectTo: 'resources/food', pathMatch: 'full' },
   { path: 'boardgames', component: BoardgamesComponent, canActivate: [authGuard] },
   { path: 'communications', component: CommunicationsComponent, canActivate: [authGuard] },
+  { path: 'user-management/users', component: UsersComponent, canActivate: [authGuard] },
+  { path: 'user-management/roles', component: RolesComponent, canActivate: [authGuard] },
+  { path: 'user-management', redirectTo: 'user-management/users', pathMatch: 'full' },
   { path: '**', redirectTo: 'participants' },
 ];

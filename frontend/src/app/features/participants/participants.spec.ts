@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { ParticipantsComponent } from './participants.component';
-import { Participant } from '@shared/types/participants.types';
+import { ParticipantsComponent } from './participants';
+import { Participant } from '@shared/types';
+import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 describe('ParticipantsComponent', () => {
   let component: ParticipantsComponent;
@@ -15,17 +16,21 @@ describe('ParticipantsComponent', () => {
       firstName: 'Mads',
       lastName: 'Hansen',
       email: 'mads@fastaval.dk',
+      phoneNumber: '+4512345678',
       barcode: 'FAST-2026-0001',
       isCheckedIn: false,
+      createdAt: '2026-01-01T00:00:00Z',
     },
     {
       id: 2,
       firstName: 'Sofie',
       lastName: 'Nielsen',
       email: 'sofie@fastaval.dk',
+      phoneNumber: '+4587654321',
       barcode: 'FAST-2026-0002',
       isCheckedIn: true,
       checkedInAt: '2026-08-08T12:00:00Z',
+      createdAt: '2026-01-01T00:00:00Z',
     },
   ];
 
@@ -44,8 +49,13 @@ describe('ParticipantsComponent', () => {
     httpMock.verify();
   });
 
+  const handleInit = () => {
+    fixture.detectChanges();
+    httpMock.expectOne('/assets/i18n/en.json').flush({});
+  };
+
   it('should load participants on initialization', () => {
-    fixture.detectChanges(); // triggers ngOnInit
+    handleInit();
 
     const req = httpMock.expectOne('/api/participants');
     expect(req.request.method).toBe('GET');
@@ -56,7 +66,7 @@ describe('ParticipantsComponent', () => {
   });
 
   it('should filter participants by search query', () => {
-    fixture.detectChanges();
+    handleInit();
     httpMock.expectOne('/api/participants').flush(mockParticipants);
 
     component.searchQuery = 'Mads';
@@ -71,7 +81,7 @@ describe('ParticipantsComponent', () => {
   });
 
   it('should perform check-in action for a participant', () => {
-    fixture.detectChanges();
+    handleInit();
     httpMock.expectOne('/api/participants').flush(mockParticipants);
 
     component.checkIn(1);

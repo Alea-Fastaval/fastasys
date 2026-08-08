@@ -1,0 +1,32 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Hero Force Shift Roster (Heltestyrken)</h1>
+    <button mat-raised-button color="primary"><mat-icon>add</mat-icon> Create Shift</button>
+  </div>
+
+  <div class="shifts-grid">
+    @for (shift of shifts(); track shift.id) {
+    <app-card>
+      <div class="shift-header">
+        <h3 class="shift-title">{{ shift.title }}</h3>
+        <app-badge [variant]="shift.currentParticipants >= shift.maxParticipants ? 'danger' : 'success'">
+          {{ shift.currentParticipants }}/{{ shift.maxParticipants }}
+        </app-badge>
+      </div>
+
+      <p class="shift-desc">{{ shift.description }}</p>
+
+      <div class="shift-time">
+        <mat-icon inline>schedule</mat-icon>
+        <span>{{ shift.startTime | date: 'short' }} - {{ shift.endTime | date: 'shortTime' }}</span>
+      </div>
+
+      <div class="shift-action">
+        <button mat-stroked-button color="primary" [disabled]="shift.currentParticipants >= shift.maxParticipants">
+          Sign Up
+        </button>
+      </div>
+    </app-card>
+    }
+  </div>
+</div>

@@ -1,0 +1,138 @@
+<mat-toolbar color="primary" class="main-toolbar">
+  <span class="brand">{{ 'nav.brand' | translate }}</span>
+  <span class="spacer"></span>
+
+  @if (authService.isAuthenticated()) {
+  <nav class="nav-links">
+    <a mat-button routerLink="/participants" routerLinkActive="active-link">
+      <mat-icon>people</mat-icon> {{ 'nav.participants' | translate }}
+    </a>
+    <a mat-button routerLink="/activities" routerLinkActive="active-link">
+      <mat-icon>casino</mat-icon> {{ 'nav.activities' | translate }}
+    </a>
+    <a mat-button routerLink="/hero-force" routerLinkActive="active-link">
+      <mat-icon>calendar_today</mat-icon> {{ 'nav.heroForce' | translate }}
+    </a>
+    <a mat-button routerLink="/shop" routerLinkActive="active-link">
+      <mat-icon>shopping_cart</mat-icon> {{ 'nav.shop' | translate }}
+    </a>
+
+    <!-- Resources Dropdown Submenu -->
+    <div class="menu-hover-wrapper" (mouseenter)="openMenu(resourcesTrigger)" (mouseleave)="closeMenu(resourcesTrigger)">
+      <button
+        mat-button
+        [matMenuTriggerFor]="resourcesMenu"
+        [class.active-link]="isResourcesActive()"
+        #resourcesTrigger="matMenuTrigger"
+      >
+        <mat-icon>inventory_2</mat-icon> {{ 'nav.resources' | translate }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #resourcesMenu="matMenu" [hasBackdrop]="false">
+        <div (mouseenter)="cancelClose()" (mouseleave)="closeMenu(resourcesTrigger)">
+          <a mat-menu-item routerLink="/resources/food">
+            <mat-icon>restaurant</mat-icon>
+            <span>{{ 'nav.food' | translate }}</span>
+          </a>
+          <a mat-menu-item routerLink="/resources/wear">
+            <mat-icon>checkroom</mat-icon>
+            <span>{{ 'nav.wear' | translate }}</span>
+          </a>
+          <a mat-menu-item routerLink="/resources/rooms">
+            <mat-icon>meeting_room</mat-icon>
+            <span>{{ 'nav.rooms' | translate }}</span>
+          </a>
+        </div>
+      </mat-menu>
+    </div>
+
+    <a mat-button routerLink="/boardgames" routerLinkActive="active-link">
+      <mat-icon>sports_esports</mat-icon> {{ 'nav.boardgames' | translate }}
+    </a>
+    <a mat-button routerLink="/communications" routerLinkActive="active-link">
+      <mat-icon>chat</mat-icon> {{ 'nav.communications' | translate }}
+    </a>
+
+    <!-- User Management Dropdown Submenu -->
+    <div class="menu-hover-wrapper" (mouseenter)="openMenu(userMgmtTrigger)" (mouseleave)="closeMenu(userMgmtTrigger)">
+      <button
+        mat-button
+        [matMenuTriggerFor]="userMgmtMenu"
+        [class.active-link]="isUserMgmtActive()"
+        #userMgmtTrigger="matMenuTrigger"
+      >
+        <mat-icon>manage_accounts</mat-icon> {{ 'nav.userManagement' | translate }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #userMgmtMenu="matMenu" [hasBackdrop]="false">
+        <div (mouseenter)="cancelClose()" (mouseleave)="closeMenu(userMgmtTrigger)">
+          <a mat-menu-item routerLink="/user-management/users">
+            <mat-icon>people</mat-icon>
+            <span>{{ 'nav.users' | translate }}</span>
+          </a>
+          <a mat-menu-item routerLink="/user-management/roles">
+            <mat-icon>security</mat-icon>
+            <span>{{ 'nav.roles' | translate }}</span>
+          </a>
+        </div>
+      </mat-menu>
+    </div>
+  </nav>
+  <span class="spacer"></span>
+
+  <!-- Language Switcher Dropdown next to Logout -->
+  <div class="menu-hover-wrapper" (mouseenter)="openMenu(langTrigger)" (mouseleave)="closeMenu(langTrigger)">
+    <button
+      mat-button
+      [matMenuTriggerFor]="langMenu"
+      class="lang-switcher-btn"
+      title="Change Language"
+      #langTrigger="matMenuTrigger"
+    >
+      <span class="flag-icon">{{ translationService.currentLang() === 'da' ? '🇩🇰' : '🇬🇧' }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #langMenu="matMenu" class="lang-dropdown-menu" [hasBackdrop]="false">
+      <div (mouseenter)="cancelClose()" (mouseleave)="closeMenu(langTrigger)">
+        <button mat-menu-item (click)="setLang('en')">
+          <span class="flag-option">🇬🇧</span> {{ 'nav.english' | translate }}
+        </button>
+        <button mat-menu-item (click)="setLang('da')">
+          <span class="flag-option">🇩🇰</span> {{ 'nav.danish' | translate }}
+        </button>
+      </div>
+    </mat-menu>
+  </div>
+
+  <button mat-icon-button (click)="logout()" [title]="'nav.logout' | translate">
+    <mat-icon>logout</mat-icon>
+  </button>
+  } @else {
+  <!-- Language Switcher for Unauthenticated Users -->
+  <div class="menu-hover-wrapper" (mouseenter)="openMenu(langUnauthTrigger)" (mouseleave)="closeMenu(langUnauthTrigger)">
+    <button
+      mat-button
+      [matMenuTriggerFor]="langUnauthMenu"
+      class="lang-switcher-btn"
+      title="Change Language"
+      #langUnauthTrigger="matMenuTrigger"
+    >
+      <span class="flag-icon">{{ translationService.currentLang() === 'da' ? '🇩🇰' : '🇬🇧' }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #langUnauthMenu="matMenu" class="lang-dropdown-menu" [hasBackdrop]="false">
+      <div (mouseenter)="cancelClose()" (mouseleave)="closeMenu(langUnauthTrigger)">
+        <button mat-menu-item (click)="setLang('en')">
+          <span class="flag-option">🇬🇧</span> {{ 'nav.english' | translate }}
+        </button>
+        <button mat-menu-item (click)="setLang('da')">
+          <span class="flag-option">🇩🇰</span> {{ 'nav.danish' | translate }}
+        </button>
+      </div>
+    </mat-menu>
+  </div>
+
+  <a mat-button routerLink="/signup">{{ 'nav.signup' | translate }}</a>
+  <a mat-button routerLink="/login">{{ 'nav.login' | translate }}</a>
+  }
+</mat-toolbar>

@@ -21,6 +21,23 @@ public static class DbSeeder
 
         var requiredPrivileges = new[]
         {
+            ("View Users", "users_view"),
+            ("Edit/Create Users", "users_edit"),
+            ("View Boardgames", "boardgames_view"),
+            ("Edit/Create Boardgames", "boardgames_edit"),
+            ("View Participants", "participants_view"),
+            ("Edit/Create Participants", "participants_edit"),
+            ("View Activities", "activities_view"),
+            ("Edit/Create Activities", "activities_edit"),
+            ("View Hero Force", "hero_force_view"),
+            ("Edit/Create Hero Force", "hero_force_edit"),
+            ("View Food", "food_view"),
+            ("Edit/Create Food", "food_edit"),
+            ("View Wear", "wear_view"),
+            ("Edit/Create Wear", "wear_edit"),
+            ("View Rooms", "rooms_view"),
+            ("Edit/Create Rooms", "rooms_edit"),
+            // Legacy backwards-compatibility keys
             ("Participant Management", "participant_management"),
             ("Activity Management", "activity_management"),
             ("Hero Force Shift Management", "hero_force_management"),
@@ -40,6 +57,30 @@ public static class DbSeeder
             if (!db.RolePrivileges.Any(rp => rp.RoleId == adminRole.Id && rp.PrivilegeId == priv.Id))
             {
                 db.RolePrivileges.Add(new RolePrivilege { RoleId = adminRole.Id, PrivilegeId = priv.Id });
+            }
+        }
+
+        // Seed Organizer Role
+        var organizerRole = db.Roles.FirstOrDefault(r => r.Name == "Organizer");
+        if (organizerRole == null)
+        {
+            organizerRole = new Role
+            {
+                Name = "Organizer",
+                Description = "Event Organizer with view & manage rights for convention operations"
+            };
+            db.Roles.Add(organizerRole);
+            db.SaveChanges();
+
+            // Give view rights to Organizer
+            var viewKeys = new[] { "users_view", "boardgames_view", "participants_view", "activities_view", "hero_force_view", "food_view", "wear_view", "rooms_view" };
+            foreach (var vKey in viewKeys)
+            {
+                var p = db.Privileges.FirstOrDefault(pr => pr.Key == vKey);
+                if (p != null)
+                {
+                    db.RolePrivileges.Add(new RolePrivilege { RoleId = organizerRole.Id, PrivilegeId = p.Id });
+                }
             }
         }
         db.SaveChanges();

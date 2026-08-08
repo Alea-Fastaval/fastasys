@@ -1,0 +1,43 @@
+.page-container {
+  padding: 24px;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+  }
+}
+.shifts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.shift-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.shift-title {
+  margin: 0;
+}
+.shift-desc {
+  color: #666;
+  margin-bottom: 12px;
+}
+.shift-time {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #888;
+  font-size: 13px;
+}
+.shift-action {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}

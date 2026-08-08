@@ -21,6 +21,7 @@ export interface Room {
   location: string;
   capacity: number;
   description: string;
+  size?: number;
 }
 
 export interface OrderFoodDto {

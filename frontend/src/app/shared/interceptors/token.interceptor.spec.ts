@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpRequest, HttpHandlerFn, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { tokenInterceptor } from './token.interceptor';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '@shared/services';
 import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('tokenInterceptor', () => {
