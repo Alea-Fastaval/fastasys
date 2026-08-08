@@ -1,0 +1,13 @@
+<div class="atom-card" [class.hoverable]="hoverable">
+  @if (title) {
+  <div class="atom-card-header">
+    <h3 class="atom-card-title">{{ title }}</h3>
+    @if (subtitle) {
+    <span class="atom-card-subtitle">{{ subtitle }}</span>
+    }
+  </div>
+  }
+  <div class="atom-card-content">
+    <ng-content />
+  </div>
+</div>

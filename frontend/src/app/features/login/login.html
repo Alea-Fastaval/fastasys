@@ -1,0 +1,40 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'auth.loginTitle' | translate }}</mat-card-title>
+      <mat-card-subtitle>{{ 'auth.loginSubtitle' | translate }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit()" class="login-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'auth.username' | translate }}</mat-label>
+          <input matInput [(ngModel)]="username" name="username" required />
+          <mat-icon matPrefix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'auth.password' | translate }}</mat-label>
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix (click)="hidePassword.set(!hidePassword())" type="button">
+            <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+        }
+
+        <button mat-raised-button color="primary" type="submit" class="full-width submit-btn" [disabled]="loading()">
+          {{ 'auth.loginButton' | translate }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

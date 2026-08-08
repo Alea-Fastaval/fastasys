@@ -1,0 +1,48 @@
+.main-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.menu-hover-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.active-link {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.lang-switcher-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+.flag-icon {
+  font-size: 1.2rem;
+}
+
+.flag-option {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}

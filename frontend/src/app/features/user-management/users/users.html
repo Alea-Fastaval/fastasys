@@ -1,0 +1,159 @@
+<div class="page-container">
+  <header class="page-header">
+    <div>
+      <h1>{{ 'users.title' | translate }}</h1>
+      <p>{{ 'users.subtitle' | translate }}</p>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="openCreateUserModal()">
+        <mat-icon>person_add</mat-icon> {{ 'users.addUser' | translate }}
+      </button>
+    </div>
+  </header>
+
+  <!-- USERS MANAGEMENT TABLE -->
+  <div class="toolbar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>{{ 'users.searchPlaceholder' | translate }}</mat-label>
+        <input matInput [(ngModel)]="searchQuery" (keyup.enter)="loadUsers()" placeholder="e.g. admin" />
+        <mat-icon matSuffix (click)="loadUsers()">search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <table mat-table [dataSource]="users()" class="mat-elevation-z2 full-table">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.id' | translate }}</th>
+        <td mat-cell *matCellDef="let u">{{ u.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>{{ 'users.username' | translate }}</th>
+        <td mat-cell *matCellDef="let u">
+          <strong>{{ u.username }}</strong>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef>{{ 'users.fullName' | translate }}</th>
+        <td mat-cell *matCellDef="let u">{{ u.firstName }} {{ u.lastName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.email' | translate }}</th>
+        <td mat-cell *matCellDef="let u">{{ u.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="roles">
+        <th mat-header-cell *matHeaderCellDef>{{ 'users.roles' | translate }}</th>
+        <td mat-cell *matCellDef="let u">
+          @for (role of u.roles; track role.id) {
+          <app-badge variant="neutral">{{ role.name }}</app-badge>
+          } @empty {
+          <span class="text-muted">{{ 'users.noRoles' | translate }}</span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.status' | translate }}</th>
+        <td mat-cell *matCellDef="let u">
+          <app-badge [variant]="u.isActive ? 'success' : 'danger'">
+            {{ (u.isActive ? 'common.active' : 'common.inactive') | translate }}
+          </app-badge>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | translate }}</th>
+        <td mat-cell *matCellDef="let u">
+          <button mat-icon-button color="primary" (click)="openEditUserModal(u)" [title]="'users.editUser' | translate">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            [color]="u.isActive ? 'warn' : 'accent'"
+            (click)="toggleActive(u)"
+            [title]="(u.isActive ? 'users.deactivateUser' : 'users.activateUser') | translate"
+          >
+            <mat-icon>{{ u.isActive ? 'block' : 'check_circle' }}</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: userColumns"></tr>
+    </table>
+
+  <!-- Modal Form (User Create/Edit) -->
+  @if (showUserModal()) {
+  <div class="modal-backdrop" (click)="closeUserModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <app-card [title]="(editingUserId() ? 'users.editUser' : 'users.createUser') | translate">
+        <form (ngSubmit)="saveUser()" #userForm="ngForm">
+          @if (!editingUserId()) {
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'users.username' | translate }}</mat-label>
+            <input matInput [(ngModel)]="formUser.username" name="username" required />
+          </mat-form-field>
+          }
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'users.firstName' | translate }}</mat-label>
+              <input matInput [(ngModel)]="formUser.firstName" name="firstName" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'users.lastName' | translate }}</mat-label>
+              <input matInput [(ngModel)]="formUser.lastName" name="lastName" required />
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'users.email' | translate }}</mat-label>
+            <input matInput type="email" [(ngModel)]="formUser.email" name="email" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ (editingUserId() ? 'users.passwordPlaceholder' : 'users.password') | translate }}</mat-label>
+            <input
+              matInput
+              type="password"
+              [(ngModel)]="formUser.password"
+              name="password"
+              [required]="!editingUserId()"
+            />
+          </mat-form-field>
+
+          <div class="form-section">
+            <span class="section-label">{{ 'users.assignedRoles' | translate }}</span>
+            <div class="roles-grid">
+              @for (role of availableRoles(); track role.id) {
+              <mat-checkbox
+                [checked]="isRoleSelectedForUser(role.id)"
+                (change)="toggleUserRoleSelection(role.id, $event.checked)"
+              >
+                {{ role.name }} <span class="role-desc">({{ role.description }})</span>
+              </mat-checkbox>
+              }
+            </div>
+          </div>
+
+          <div class="form-section">
+            <mat-checkbox [(ngModel)]="formUser.isActive" name="isActive"
+              >{{ 'users.activeAccount' | translate }}</mat-checkbox
+            >
+          </div>
+
+          <div class="modal-actions">
+            <button mat-button type="button" (click)="closeUserModal()">{{ 'common.cancel' | translate }}</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.form.valid">
+              {{ (editingUserId() ? 'common.save' : 'common.create') | translate }}
+            </button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  }
+</div>

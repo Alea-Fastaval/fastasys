@@ -1,7 +1,11 @@
-import { provideHttpClient, withXhr } from '@angular/common/http';
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { tokenInterceptor } from '@shared/interceptors';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -9,7 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideHttpClient(withXhr()),
-    provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([tokenInterceptor])),
   ],
 };

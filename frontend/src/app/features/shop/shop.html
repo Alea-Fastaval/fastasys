@@ -1,0 +1,57 @@
+<div class="page-container">
+  <header class="page-header">
+    <h1>Shop & Economy Management (Kiosk & Merchandise)</h1>
+    <p>Browse products, manage inventory stock, and process sales.</p>
+  </header>
+
+  <div class="shop-grid">
+    <div class="products-section">
+      <h2>Products</h2>
+      <div class="product-cards">
+        @for (product of products(); track product.id) {
+        <app-card [title]="product.name" [hoverable]="true">
+          <div class="card-badge">
+            <app-badge variant="neutral">{{ product.category }}</app-badge>
+          </div>
+          <p>{{ product.description }}</p>
+          <div class="card-footer">
+            <span class="price">{{ product.price | currency: 'DKK ' }}</span>
+            <span class="stock" [class.low]="product.stock < 10">Stock: {{ product.stock }}</span>
+            <button class="btn btn-primary" (click)="buyProduct(product)" [disabled]="product.stock <= 0">
+              {{ product.stock > 0 ? 'Buy' : 'Out of Stock' }}
+            </button>
+          </div>
+        </app-card>
+        }
+      </div>
+    </div>
+
+    <div class="sales-section">
+      <h2>Recent Sales</h2>
+      <app-card title="Sales Activity">
+        <table class="sales-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th>Customer</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (sale of sales(); track sale.id) {
+            <tr>
+              <td>{{ sale.saleDate | date: 'short' }}</td>
+              <td>{{ sale.productName }}</td>
+              <td>{{ sale.quantity }}</td>
+              <td>{{ sale.totalAmount | currency: 'DKK ' }}</td>
+              <td>{{ sale.participantName }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </app-card>
+    </div>
+  </div>
+</div>

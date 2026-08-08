@@ -1,0 +1,65 @@
+<div class="page-container">
+  <header class="page-header">
+    <h1>Boardgame Library & Loans</h1>
+    <p>Browse game catalog, check out titles, and manage active loans.</p>
+  </header>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+      placeholder="Search by game title, author, barcode..."
+      class="search-input"
+    />
+  </div>
+
+  <div class="grid-layout">
+    <div class="games-section">
+      <h2>Game Catalog</h2>
+      <div class="games-cards">
+        @for (game of games(); track game.id) {
+        <app-card [title]="game.title" [subtitle]="'By ' + game.author" [hoverable]="true">
+          <div class="status-chip">
+            <app-badge [variant]="game.isPresent ? 'success' : 'danger'">
+              {{ game.isPresent ? 'Available' : 'On Loan' }}
+            </app-badge>
+          </div>
+          <div class="game-meta">
+            <span>👥 {{ game.minPlayers }}-{{ game.maxPlayers }} Players</span>
+            <span>⏱️ {{ game.playingTimeMinutes }} mins</span>
+          </div>
+          <div class="action-bar">
+            @if (game.isPresent) {
+            <button class="btn btn-primary" (click)="checkout(game)">Checkout</button>
+            } @else {
+            <button class="btn btn-secondary" (click)="returnGame(game)">Return</button>
+            }
+          </div>
+        </app-card>
+        }
+      </div>
+    </div>
+
+    <div class="loans-section">
+      <h2>Active Loans</h2>
+      <app-card title="Loan Tracking">
+        <div class="loans-list">
+          @for (loan of loans(); track loan.id) {
+          <div class="loan-item">
+            <div>
+              <strong>{{ loan.boardgameTitle }}</strong>
+              <div class="subtext">Borrowed by {{ loan.participantName }}</div>
+            </div>
+            <div class="loan-status">
+              <app-badge [variant]="loan.returnedAt ? 'success' : 'warning'">
+                {{ loan.returnedAt ? 'Returned' : 'Active' }}
+              </app-badge>
+            </div>
+          </div>
+          }
+        </div>
+      </app-card>
+    </div>
+  </div>
+</div>
