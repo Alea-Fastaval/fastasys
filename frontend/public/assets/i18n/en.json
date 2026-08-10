@@ -89,7 +89,7 @@
     "checkedInAt": "Checked in at"
   },
   "activities": {
-    "title": "Activity & Event Management (Aktiviteter)",
+    "title": "Activity & Event Management",
     "subtitle": "Manage roleplaying scenarios, board game tournaments, and convention events.",
     "searchPlaceholder": "Search activities by title, author, or category...",
     "category": "Category",
@@ -99,7 +99,7 @@
     "allCategories": "All Categories"
   },
   "heroForce": {
-    "title": "Hero Force Shift Management (GDS Vakter)",
+    "title": "Hero Force Shift Management",
     "subtitle": "Volunteer shift scheduling, category overview, and shift signup.",
     "shiftName": "Shift Name",
     "time": "Time Slot",
@@ -108,7 +108,7 @@
     "myShifts": "My Signed Up Shifts"
   },
   "shop": {
-    "title": "Shop & Economy (Kiosk & Salg)",
+    "title": "Shop & Economy",
     "subtitle": "Product catalog, stock inventory management, and sales logs.",
     "products": "Product Catalog",
     "price": "Price",
@@ -136,7 +136,7 @@
     "size": "Size"
   },
   "boardgames": {
-    "title": "Boardgame Lending Library (Brætspiludlån)",
+    "title": "Boardgame Lending Library",
     "subtitle": "Search board game library, check availability, check out, and process returns.",
     "searchPlaceholder": "Search by title, author, or barcode...",
     "present": "Available in Library",

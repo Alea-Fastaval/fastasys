@@ -8,16 +8,8 @@ Before running the application, make sure your development environment has all r
 
 You can run the environment check script to verify your setup and install missing frontend packages automatically:
 
-- **macOS / Linux:**
-
   ```bash
   ./setup.sh
-  ```
-
-- **Windows (PowerShell):**
-
-  ```powershell
-  .\setup.ps1
   ```
 
 ## How to Run the Project
@@ -31,6 +23,22 @@ dotnet run --project Fastasys.AppHost
 ```
 
 Once running, open the Aspire Dashboard URL outputted in the terminal to view, monitor, and access the services.
+
+---
+
+## 🌐 Quick Reference: Project URLs & API Documentation
+
+When the application is running (via Aspire or standalone), the following endpoints and documentation dashboards are available:
+
+| Interface / Service | Primary URL (HTTP) | Secure URL (HTTPS) | Description |
+| --- | --- | --- | --- |
+| 🟪 **Scalar API Reference** | [http://localhost:5363/scalar/v1](http://localhost:5363/scalar/v1) | [https://localhost:7408/scalar/v1](https://localhost:7408/scalar/v1) | **Modern interactive API documentation & testing sandbox** (Supports JWT authorization) |
+| 🟩 **Classic Swagger UI** | [http://localhost:5363/swagger](http://localhost:5363/swagger) | [https://localhost:7408/swagger](https://localhost:7408/swagger) | Traditional Swagger UI API catalog |
+| 💻 **Angular Frontend** | [http://localhost:4200/](http://localhost:4200/) | N/A | Angular standalone single page application |
+| 🛢️ **phpMyAdmin** | Dynamic (via Aspire Dashboard) | Dynamic | MySQL database administration tool |
+
+---
+
 
 ### Running individual components
 

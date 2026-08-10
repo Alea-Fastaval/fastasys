@@ -39,10 +39,22 @@
 }
 
 .flag-icon {
-  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
 }
 
-.flag-option {
-  font-size: 1.2rem;
-  margin-right: 0.5rem;
+.flag-img,
+.flag-svg {
+  width: 22px;
+  height: 15px;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  vertical-align: middle;
+  object-fit: cover;
+
+  &.flag-option {
+    margin-right: 0.6rem;
+  }
 }
+
+
