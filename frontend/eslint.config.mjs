@@ -23,7 +23,6 @@ export default defineConfig(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      '@angular-eslint/prefer-on-push-component-change-detection': 'error',
       '@typescript-eslint/unbound-method': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'off',

@@ -254,4 +254,38 @@ public class ApiServiceTests
         Assert.IsType<OkObjectResult>(result);
         Assert.Single(db.Tickets);
     }
+
+    [Fact]
+    public async Task OpenApi_Scalar_And_SwaggerUI_Endpoints_ReturnSuccess()
+    {
+        await using var factory = new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory<Fastasys.ApiService.Program>();
+
+        var client = factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
+
+        var swaggerJsonResp = await client.GetAsync("/swagger/v1/swagger.json");
+        Assert.Equal(HttpStatusCode.OK, swaggerJsonResp.StatusCode);
+        var swaggerJson = await swaggerJsonResp.Content.ReadAsStringAsync();
+        Assert.Contains("/api/Participants", swaggerJson);
+        Assert.Contains("/api/Auth/login", swaggerJson);
+
+        Assert.Contains("/api/Activities", swaggerJson);
+
+
+
+
+        var scalarResp = await client.GetAsync("/scalar/v1");
+        Assert.Equal(HttpStatusCode.OK, scalarResp.StatusCode);
+
+        var swaggerResp = await client.GetAsync("/swagger/index.html");
+        Assert.Equal(HttpStatusCode.OK, swaggerResp.StatusCode);
+
+        var rootResp = await client.GetAsync("/");
+        Assert.True(rootResp.StatusCode == HttpStatusCode.Found || rootResp.StatusCode == HttpStatusCode.MovedPermanently);
+        Assert.Equal("/scalar/v1", rootResp.Headers.Location?.OriginalString);
+    }
 }
+
+

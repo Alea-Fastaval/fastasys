@@ -9,12 +9,13 @@ var mysql = builder.AddMySql("mysql")
 var mysqldb = mysql.AddDatabase("fasta2026");
 
 var apiService = builder.AddProject<Projects.Fastasys_ApiService>("apiservice")
-    .WithHttpEndpoint(port: 5363)
-    .WithHttpsEndpoint(port: 7408)
+    .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
+    .WithHttpEndpoint(port: 5363, name: "scalar")
+    .WithHttpsEndpoint(port: 7408, name: "swagger")
     .WithReference(mysqldb)
     .WaitFor(mysqldb)
-    .WithHttpHealthCheck("/health")
-    ;
+    .WithHttpHealthCheck("/health");
+
 
 builder.AddJavaScriptApp("angular", "../frontend", runScriptName: "start")
     .WithHttpEndpoint(port: 4200, isProxied: false)

@@ -9,6 +9,7 @@
     "dbaeumer.vscode-eslint",
     "ms-azuretools.vscode-containers",
     "ms-azuretools.vscode-docker",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "dotnetdev-kr-custom.csharp"
   ]
 }

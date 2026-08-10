@@ -89,16 +89,24 @@
       title="Change Language"
       #langTrigger="matMenuTrigger"
     >
-      <span class="flag-icon">{{ translationService.currentLang() === 'da' ? '🇩🇰' : '🇬🇧' }}</span>
+      <span class="flag-icon">
+        @if (translationService.currentLang() === 'da') {
+        <img src="/assets/img/flag_dk.svg" alt="Danish Flag" class="flag-img" />
+        } @else {
+        <img src="/assets/img/flag_en.svg" alt="English Flag" class="flag-img" />
+        }
+      </span>
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-menu #langMenu="matMenu" class="lang-dropdown-menu" [hasBackdrop]="false">
       <div (mouseenter)="cancelClose()" (mouseleave)="closeMenu(langTrigger)">
         <button mat-menu-item (click)="setLang('en')">
-          <span class="flag-option">🇬🇧</span> {{ 'nav.english' | translate }}
+          <img src="/assets/img/flag_en.svg" alt="English Flag" class="flag-img flag-option" />
+          <span>{{ 'nav.english' | translate }}</span>
         </button>
         <button mat-menu-item (click)="setLang('da')">
-          <span class="flag-option">🇩🇰</span> {{ 'nav.danish' | translate }}
+          <img src="/assets/img/flag_dk.svg" alt="Danish Flag" class="flag-img flag-option" />
+          <span>{{ 'nav.danish' | translate }}</span>
         </button>
       </div>
     </mat-menu>
@@ -117,20 +125,30 @@
       title="Change Language"
       #langUnauthTrigger="matMenuTrigger"
     >
-      <span class="flag-icon">{{ translationService.currentLang() === 'da' ? '🇩🇰' : '🇬🇧' }}</span>
+      <span class="flag-icon">
+        @if (translationService.currentLang() === 'da') {
+        <img src="/assets/img/flag_dk.svg" alt="Danish Flag" class="flag-img" />
+        } @else {
+        <img src="/assets/img/flag_en.svg" alt="English Flag" class="flag-img" />
+        }
+      </span>
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-menu #langUnauthMenu="matMenu" class="lang-dropdown-menu" [hasBackdrop]="false">
       <div (mouseenter)="cancelClose()" (mouseleave)="closeMenu(langUnauthTrigger)">
         <button mat-menu-item (click)="setLang('en')">
-          <span class="flag-option">🇬🇧</span> {{ 'nav.english' | translate }}
+          <img src="/assets/img/flag_en.svg" alt="English Flag" class="flag-img flag-option" />
+          <span>{{ 'nav.english' | translate }}</span>
         </button>
         <button mat-menu-item (click)="setLang('da')">
-          <span class="flag-option">🇩🇰</span> {{ 'nav.danish' | translate }}
+          <img src="/assets/img/flag_dk.svg" alt="Danish Flag" class="flag-img flag-option" />
+          <span>{{ 'nav.danish' | translate }}</span>
         </button>
       </div>
     </mat-menu>
   </div>
+
+
 
   <a mat-button routerLink="/signup">{{ 'nav.signup' | translate }}</a>
   <a mat-button routerLink="/login">{{ 'nav.login' | translate }}</a>

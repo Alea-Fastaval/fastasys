@@ -36,12 +36,7 @@ public static class DbSeeder
             ("View Wear", "wear_view"),
             ("Edit/Create Wear", "wear_edit"),
             ("View Rooms", "rooms_view"),
-            ("Edit/Create Rooms", "rooms_edit"),
-            // Legacy backwards-compatibility keys
-            ("Participant Management", "participant_management"),
-            ("Activity Management", "activity_management"),
-            ("Hero Force Shift Management", "hero_force_management"),
-            ("Shop Management", "shop_management")
+            ("Edit/Create Rooms", "rooms_edit")
         };
 
         foreach (var (name, key) in requiredPrivileges)

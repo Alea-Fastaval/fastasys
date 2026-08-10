@@ -1,16 +1,16 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Role, Privilege, CreateRoleDto, SystemDomain } from '@shared/types';
 import { Badge, Card } from '@shared/components';
 import { TranslatePipe } from '@shared/pipes';
+import { CreateRoleDto, Privilege, Role, SystemDomain } from '@shared/types';
 
 @Component({
   selector: 'app-roles',
@@ -38,14 +38,14 @@ export class RolesComponent implements OnInit {
   public readonly showRoleModal = signal<boolean>(false);
 
   public systemDomains: SystemDomain[] = [
-    { key: 'users', name: 'Users (Brugere & Accounts)' },
-    { key: 'boardgames', name: 'Boardgames (Brætspil Library)' },
-    { key: 'participants', name: 'Participants (Deltagere)' },
-    { key: 'activities', name: 'Activities (Scenarier & Turneringer)' },
-    { key: 'hero_force', name: 'Hero Force (GDS Shifts)' },
-    { key: 'food', name: 'Food (Forplejning & Mad)' },
-    { key: 'wear', name: 'Wear (Merchandise & T-Shirts)' },
-    { key: 'rooms', name: 'Rooms (Lokaler & Overnatning)' },
+    { key: 'users', name: 'Users' },
+    { key: 'boardgames', name: 'Boardgames' },
+    { key: 'participants', name: 'Participants' },
+    { key: 'activities', name: 'Activities' },
+    { key: 'hero_force', name: 'Hero Force' },
+    { key: 'food', name: 'Food' },
+    { key: 'wear', name: 'Wear' },
+    { key: 'rooms', name: 'Rooms' },
   ];
 
   public formRole: CreateRoleDto = {
@@ -84,24 +84,15 @@ export class RolesComponent implements OnInit {
 
   public getDomainIcon(domainKey: string): string {
     switch (domainKey) {
-      case 'users':
-        return 'manage_accounts';
-      case 'boardgames':
-        return 'sports_esports';
-      case 'participants':
-        return 'people';
-      case 'activities':
-        return 'casino';
-      case 'hero_force':
-        return 'calendar_today';
-      case 'food':
-        return 'restaurant';
-      case 'wear':
-        return 'checkroom';
-      case 'rooms':
-        return 'meeting_room';
-      default:
-        return 'security';
+      case 'users': return 'manage_accounts';
+      case 'boardgames': return 'sports_esports';
+      case 'participants': return 'people';
+      case 'activities': return 'casino';
+      case 'hero_force': return 'calendar_today';
+      case 'food': return 'restaurant';
+      case 'wear': return 'checkroom';
+      case 'rooms': return 'meeting_room';
+      default: return 'security';
     }
   }
 
