@@ -39,7 +39,6 @@ When the application is running (via Aspire or standalone), the following endpoi
 
 ---
 
-
 ### Running individual components
 
 #### Backend API Service
