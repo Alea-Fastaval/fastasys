@@ -15,9 +15,13 @@ concurrency:
 
 jobs:
   backend:
-    name: Backend (.NET)
+    name: Backend - ${{ matrix.check }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [Format, Build, Test, Migrations]
     steps:
       - uses: actions/checkout@v7
         with:
@@ -29,7 +33,7 @@ jobs:
           dotnet-quality: ga
 
       - name: Cache NuGet packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', 'nuget.config') }}
@@ -40,24 +44,37 @@ jobs:
         run: dotnet restore Fastasys.slnx
 
       - name: Restore local tools
+        if: matrix.check == 'Format' || matrix.check == 'Migrations'
         run: dotnet tool restore
 
       - name: Verify formatting
+        if: matrix.check == 'Format'
         run: dotnet format Fastasys.slnx --verify-no-changes --no-restore
 
       - name: Build
+        if: matrix.check == 'Build'
         run: dotnet build Fastasys.slnx --configuration Release --no-restore
 
-      - name: Verify migrations are current
-        run: dotnet tool run dotnet-ef migrations has-pending-model-changes --project backend/src/Fastasys.ApiService/Fastasys.ApiService.csproj --startup-project backend/src/Fastasys.ApiService/Fastasys.ApiService.csproj --configuration Release --no-build
+      - name: Build test and migration dependencies
+        if: matrix.check == 'Test' || matrix.check == 'Migrations'
+        run: dotnet build Fastasys.slnx --configuration Release --no-restore
 
       - name: Test
+        if: matrix.check == 'Test'
         run: dotnet test backend/tests/Fastasys.Tests/Fastasys.Tests.csproj --configuration Release --no-build --no-restore
 
+      - name: Verify migrations are current
+        if: matrix.check == 'Migrations'
+        run: dotnet tool run dotnet-ef migrations has-pending-model-changes --project backend/src/Fastasys.ApiService/Fastasys.ApiService.csproj --startup-project backend/src/Fastasys.ApiService/Fastasys.ApiService.csproj --configuration Release --no-build
+
   frontend:
-    name: Frontend (Angular)
+    name: Frontend - ${{ matrix.check }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [Format, Lint, Test, Build]
     defaults:
       run:
         working-directory: frontend
@@ -77,13 +94,17 @@ jobs:
         run: npm ci
 
       - name: Verify formatting
+        if: matrix.check == 'Format'
         run: npm run format:check
 
       - name: Lint
+        if: matrix.check == 'Lint'
         run: npm run lint
 
       - name: Test
+        if: matrix.check == 'Test'
         run: npm run test
 
       - name: Build
+        if: matrix.check == 'Build'
         run: npm run build:prod
