@@ -1,8 +1,18 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+# .NET and IDE output
+/.vs/
+**/[Bb]in/
+**/[Oo]bj/
+*.user
+*.http
 
-/.vs
-/.aspire
-**/bin/*
-**/obj/*
+# Node.js and Angular output
+**/node_modules/
+**/dist/
+**/coverage/
+/.angular/
+npm-debug.log*
+
+# Local configuration
+.env
+.env.*
+!.env.example

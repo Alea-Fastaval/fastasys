@@ -13,4 +13,3 @@ import { Toolbar } from '@shared/components';
 export class App {
   title = 'Fastasys';
 }
-

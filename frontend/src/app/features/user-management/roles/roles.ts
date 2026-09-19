@@ -84,15 +84,24 @@ export class RolesComponent implements OnInit {
 
   public getDomainIcon(domainKey: string): string {
     switch (domainKey) {
-      case 'users': return 'manage_accounts';
-      case 'boardgames': return 'sports_esports';
-      case 'participants': return 'people';
-      case 'activities': return 'casino';
-      case 'hero_force': return 'calendar_today';
-      case 'food': return 'restaurant';
-      case 'wear': return 'checkroom';
-      case 'rooms': return 'meeting_room';
-      default: return 'security';
+      case 'users':
+        return 'manage_accounts';
+      case 'boardgames':
+        return 'sports_esports';
+      case 'participants':
+        return 'people';
+      case 'activities':
+        return 'casino';
+      case 'hero_force':
+        return 'calendar_today';
+      case 'food':
+        return 'restaurant';
+      case 'wear':
+        return 'checkroom';
+      case 'rooms':
+        return 'meeting_room';
+      default:
+        return 'security';
     }
   }
 

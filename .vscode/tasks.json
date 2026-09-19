@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Fastasys: start stack",
+      "type": "shell",
+      "command": "docker compose up --build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Fastasys: stop stack",
+      "type": "shell",
+      "command": "docker compose down",
+      "problemMatcher": []
+    },
+    {
+      "label": "Fastasys: backend checks",
+      "type": "shell",
+      "command": "dotnet restore Fastasys.slnx && dotnet tool restore && dotnet format Fastasys.slnx --verify-no-changes --no-restore && dotnet build Fastasys.slnx --configuration Release --no-restore && dotnet tool run dotnet-ef migrations has-pending-model-changes --project backend/src/Fastasys.ApiService/Fastasys.ApiService.csproj --startup-project backend/src/Fastasys.ApiService/Fastasys.ApiService.csproj --configuration Release --no-build && dotnet test backend/tests/Fastasys.Tests/Fastasys.Tests.csproj --configuration Release --no-build --no-restore",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Fastasys: frontend checks",
+      "type": "shell",
+      "command": "npm run format:check && npm run lint && npm run test && npm run build:prod",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

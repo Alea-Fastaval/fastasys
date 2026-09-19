@@ -47,6 +47,8 @@ describe('TranslationService', () => {
   };
 
   beforeEach(() => {
+    globalThis.localStorage?.removeItem('fastasys_lang');
+
     TestBed.configureTestingModule({
       providers: [TranslationService, provideHttpClient(), provideHttpClientTesting()],
     });
@@ -60,7 +62,8 @@ describe('TranslationService', () => {
   });
 
   afterEach(() => {
-    httpMock.verify();
+    httpMock?.verify();
+    globalThis.localStorage?.clear();
   });
 
   it('should initialize and load default English dictionary', () => {
@@ -69,7 +72,7 @@ describe('TranslationService', () => {
     expect(service.translate('nav.userManagement')).toBe('User Management');
     expect(service.translate('roles.title')).toBe('Role & Access Control');
     expect(service.translate('roles.subtitle')).toBe(
-      'Configure system roles and fine-grained domain permissions for FastaSys.'
+      'Configure system roles and fine-grained domain permissions for FastaSys.',
     );
     expect(service.translate('roles.addRole')).toBe('Add New Role');
     expect(service.translate('roles.roleName')).toBe('Role Name');
@@ -87,9 +90,7 @@ describe('TranslationService', () => {
     expect(service.currentLang()).toBe('da');
     expect(service.translate('nav.userManagement')).toBe('Brugerstyring');
     expect(service.translate('roles.title')).toBe('Roller & Rettigheder');
-    expect(service.translate('roles.subtitle')).toBe(
-      'Konfigurer systemroller og domænerettigheder i FastaSys.'
-    );
+    expect(service.translate('roles.subtitle')).toBe('Konfigurer systemroller og domænerettigheder i FastaSys.');
     expect(service.translate('roles.addRole')).toBe('Tilføj ny rolle');
     expect(service.translate('roles.roleName')).toBe('Rollenavn');
     expect(service.translate('roles.systemRoles')).toBe('Systemroller');

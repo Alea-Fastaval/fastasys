@@ -1,0 +1,12 @@
+.git
+.github
+.devcontainer
+.vscode
+**/bin
+**/obj
+frontend/node_modules
+frontend/dist
+frontend/coverage
+**/*.user
+**/*.http
+README.md

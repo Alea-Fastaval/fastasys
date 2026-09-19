@@ -1,15 +1,13 @@
 {
   "recommendations": [
     "angular.ng-template",
-    "redhat.vscode-xml",
-    "ms-dotnettools.vscode-dotnet-runtime",
     "ms-dotnettools.csdevkit",
     "davidanson.vscode-markdownlint",
     "editorconfig.editorconfig",
     "dbaeumer.vscode-eslint",
-    "ms-azuretools.vscode-containers",
     "ms-azuretools.vscode-docker",
     "esbenp.prettier-vscode",
-    "dotnetdev-kr-custom.csharp"
+    "redhat.vscode-yaml",
+    "github.vscode-github-actions"
   ]
 }

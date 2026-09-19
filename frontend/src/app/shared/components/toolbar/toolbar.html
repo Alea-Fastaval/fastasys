@@ -18,7 +18,11 @@
     </a>
 
     <!-- Resources Dropdown Submenu -->
-    <div class="menu-hover-wrapper" (mouseenter)="openMenu(resourcesTrigger)" (mouseleave)="closeMenu(resourcesTrigger)">
+    <div
+      class="menu-hover-wrapper"
+      (mouseenter)="openMenu(resourcesTrigger)"
+      (mouseleave)="closeMenu(resourcesTrigger)"
+    >
       <button
         mat-button
         [matMenuTriggerFor]="resourcesMenu"
@@ -117,7 +121,11 @@
   </button>
   } @else {
   <!-- Language Switcher for Unauthenticated Users -->
-  <div class="menu-hover-wrapper" (mouseenter)="openMenu(langUnauthTrigger)" (mouseleave)="closeMenu(langUnauthTrigger)">
+  <div
+    class="menu-hover-wrapper"
+    (mouseenter)="openMenu(langUnauthTrigger)"
+    (mouseleave)="closeMenu(langUnauthTrigger)"
+  >
     <button
       mat-button
       [matMenuTriggerFor]="langUnauthMenu"
@@ -147,8 +155,6 @@
       </div>
     </mat-menu>
   </div>
-
-
 
   <a mat-button routerLink="/signup">{{ 'nav.signup' | translate }}</a>
   <a mat-button routerLink="/login">{{ 'nav.login' | translate }}</a>

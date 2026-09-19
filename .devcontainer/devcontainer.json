@@ -1,0 +1,36 @@
+{
+  "name": "Fastasys (.NET + Angular)",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "Angular.ng-template",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig",
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml",
+        "github.vscode-github-actions"
+      ]
+    }
+  },
+  "containerEnv": {
+    "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
+    "NPM_CONFIG_AUDIT": "false",
+    "NPM_CONFIG_FUND": "false"
+  },
+  "postCreateCommand": "dotnet restore Fastasys.slnx && dotnet tool restore && npm ci --prefix frontend",
+  "forwardPorts": [4200, 5432, 8080],
+  "portsAttributes": {
+    "4200": {
+      "label": "Fastasys frontend"
+    },
+    "8080": {
+      "label": "Fastasys API"
+    },
+    "5432": {
+      "label": "Fastasys PostgreSQL"
+    }
+  }
+}

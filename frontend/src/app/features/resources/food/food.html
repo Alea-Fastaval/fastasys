@@ -8,14 +8,14 @@
 
   <div class="cards-grid">
     @for (food of foodTypes(); track food.id) {
-      <app-card [title]="food.name" [subtitle]="food.nameEnglish" [hoverable]="true">
-        <div class="card-footer">
-          <span class="price">{{ food.price | currency: 'DKK ' }}</span>
-          <button mat-raised-button color="primary" (click)="orderFood(food)">
-            <mat-icon>shopping_bag</mat-icon> {{ 'resources.orderFood' | translate }}
-          </button>
-        </div>
-      </app-card>
+    <app-card [title]="food.name" [subtitle]="food.nameEnglish" [hoverable]="true">
+      <div class="card-footer">
+        <span class="price">{{ food.price | currency: 'DKK ' }}</span>
+        <button mat-raised-button color="primary" (click)="orderFood(food)">
+          <mat-icon>shopping_bag</mat-icon> {{ 'resources.orderFood' | translate }}
+        </button>
+      </div>
+    </app-card>
     }
   </div>
 </div>
