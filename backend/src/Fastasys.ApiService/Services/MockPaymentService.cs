@@ -17,57 +17,57 @@ public record PaymentTransactionResult(
 
 public interface IMockPaymentService
 {
-  Task<PaymentTransactionResult> ProcessPaymentAsync(PaymentTransactionRequest request);
-  Task<PaymentTransactionResult> RefundPaymentAsync(string transactionId, decimal amount);
-  Task<PaymentTransactionResult?> GetTransactionStatusAsync(string transactionId);
+    Task<PaymentTransactionResult> ProcessPaymentAsync(PaymentTransactionRequest request);
+    Task<PaymentTransactionResult> RefundPaymentAsync(string transactionId, decimal amount);
+    Task<PaymentTransactionResult?> GetTransactionStatusAsync(string transactionId);
 }
 
 public class MockPaymentService : IMockPaymentService
 {
-  private readonly Dictionary<string, PaymentTransactionResult> _transactions = new();
-  private readonly ILogger<MockPaymentService> _logger;
+    private readonly Dictionary<string, PaymentTransactionResult> _transactions = new();
+    private readonly ILogger<MockPaymentService> _logger;
 
-  public MockPaymentService(ILogger<MockPaymentService> logger)
-  {
-    _logger = logger;
-  }
+    public MockPaymentService(ILogger<MockPaymentService> logger)
+    {
+        _logger = logger;
+    }
 
-  public Task<PaymentTransactionResult> ProcessPaymentAsync(PaymentTransactionRequest request)
-  {
-    var transactionId = "MOCK-FRITID-" + Guid.NewGuid().ToString("N")[..12].ToUpper();
-    _logger.LogInformation("Processing mock payment via fritid.dk gateway: Participant {ParticipantId}, Amount {Amount} {Currency}",
-        request.ParticipantId, request.Amount, request.Currency);
+    public Task<PaymentTransactionResult> ProcessPaymentAsync(PaymentTransactionRequest request)
+    {
+        var transactionId = "MOCK-FRITID-" + Guid.NewGuid().ToString("N")[..12].ToUpper();
+        _logger.LogInformation("Processing mock payment via fritid.dk gateway: Participant {ParticipantId}, Amount {Amount} {Currency}",
+            request.ParticipantId, request.Amount, request.Currency);
 
-    var result = new PaymentTransactionResult(
-        transactionId,
-        Success: true,
-        Status: "Completed",
-        Message: "Approved by Mock Fritid.dk Gateway",
-        TransactionTime: DateTime.UtcNow
-    );
+        var result = new PaymentTransactionResult(
+            transactionId,
+            Success: true,
+            Status: "Completed",
+            Message: "Approved by Mock Fritid.dk Gateway",
+            TransactionTime: DateTime.UtcNow
+        );
 
-    _transactions[transactionId] = result;
-    return Task.FromResult(result);
-  }
+        _transactions[transactionId] = result;
+        return Task.FromResult(result);
+    }
 
-  public Task<PaymentTransactionResult> RefundPaymentAsync(string transactionId, decimal amount)
-  {
-    _logger.LogInformation("Processing mock refund for Transaction {TransactionId}, Amount {Amount}", transactionId, amount);
+    public Task<PaymentTransactionResult> RefundPaymentAsync(string transactionId, decimal amount)
+    {
+        _logger.LogInformation("Processing mock refund for Transaction {TransactionId}, Amount {Amount}", transactionId, amount);
 
-    var result = new PaymentTransactionResult(
-        "REFUND-" + transactionId,
-        Success: true,
-        Status: "Refunded",
-        Message: $"Successfully refunded {amount} DKK",
-        TransactionTime: DateTime.UtcNow
-    );
+        var result = new PaymentTransactionResult(
+            "REFUND-" + transactionId,
+            Success: true,
+            Status: "Refunded",
+            Message: $"Successfully refunded {amount} DKK",
+            TransactionTime: DateTime.UtcNow
+        );
 
-    return Task.FromResult(result);
-  }
+        return Task.FromResult(result);
+    }
 
-  public Task<PaymentTransactionResult?> GetTransactionStatusAsync(string transactionId)
-  {
-    _transactions.TryGetValue(transactionId, out var result);
-    return Task.FromResult(result);
-  }
+    public Task<PaymentTransactionResult?> GetTransactionStatusAsync(string transactionId)
+    {
+        _transactions.TryGetValue(transactionId, out var result);
+        return Task.FromResult(result);
+    }
 }

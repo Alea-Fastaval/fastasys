@@ -14,76 +14,76 @@ public record PaymentCallbackDto(string TransactionId, string Status, string? Da
 [Route("api/[controller]")]
 public class PaymentsController : ControllerBase
 {
-  private readonly InfosysDbContext _db;
-  private readonly IMockPaymentService _paymentService;
+    private readonly InfosysDbContext _db;
+    private readonly IMockPaymentService _paymentService;
 
-  public PaymentsController(InfosysDbContext db, IMockPaymentService paymentService)
-  {
-    _db = db;
-    _paymentService = paymentService;
-  }
-
-  [HttpPost("create")]
-  [Authorize]
-  public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentRequestDto request)
-  {
-    var participant = await _db.Participants.FindAsync(request.ParticipantId);
-    if (participant == null) return NotFound("Participant not found");
-
-    var result = await _paymentService.ProcessPaymentAsync(new PaymentTransactionRequest(
-        request.ParticipantId,
-        request.Amount,
-        request.Currency
-    ));
-
-    var payment = new Payment
+    public PaymentsController(InfosysDbContext db, IMockPaymentService paymentService)
     {
-      ParticipantId = request.ParticipantId,
-      Amount = request.Amount,
-      Currency = request.Currency,
-      TransactionId = result.TransactionId,
-      Status = result.Success ? PaymentStatus.Completed : PaymentStatus.Failed,
-      PaymentProvider = "fritid.dk",
-      CreatedAt = DateTime.UtcNow,
-      CompletedAt = result.Success ? DateTime.UtcNow : null,
-      CallbackData = result.Message
-    };
-
-    _db.Payments.Add(payment);
-    await _db.SaveChangesAsync();
-
-    return Ok(new { transactionId = result.TransactionId, status = payment.Status.ToString(), message = result.Message });
-  }
-
-  [HttpPost("callback")]
-  [AllowAnonymous]
-  public async Task<IActionResult> PaymentCallback([FromBody] PaymentCallbackDto callback)
-  {
-    var payment = await _db.Payments.FirstOrDefaultAsync(p => p.TransactionId == callback.TransactionId);
-    if (payment == null) return NotFound("Payment transaction not found");
-
-    payment.CallbackData = callback.Data;
-    if (callback.Status.Equals("completed", StringComparison.OrdinalIgnoreCase))
-    {
-      payment.Status = PaymentStatus.Completed;
-      payment.CompletedAt = DateTime.UtcNow;
-    }
-    else if (callback.Status.Equals("failed", StringComparison.OrdinalIgnoreCase))
-    {
-      payment.Status = PaymentStatus.Failed;
+        _db = db;
+        _paymentService = paymentService;
     }
 
-    await _db.SaveChangesAsync();
-    return Ok(new { message = "Callback processed", status = payment.Status.ToString() });
-  }
+    [HttpPost("create")]
+    [Authorize]
+    public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentRequestDto request)
+    {
+        var participant = await _db.Participants.FindAsync(request.ParticipantId);
+        if (participant == null) return NotFound("Participant not found");
 
-  [HttpGet("{transactionId}/status")]
-  [Authorize]
-  public async Task<IActionResult> GetStatus(string transactionId)
-  {
-    var payment = await _db.Payments.FirstOrDefaultAsync(p => p.TransactionId == transactionId);
-    if (payment == null) return NotFound();
+        var result = await _paymentService.ProcessPaymentAsync(new PaymentTransactionRequest(
+            request.ParticipantId,
+            request.Amount,
+            request.Currency
+        ));
 
-    return Ok(new { transactionId = payment.TransactionId, status = payment.Status.ToString(), amount = payment.Amount });
-  }
+        var payment = new Payment
+        {
+            ParticipantId = request.ParticipantId,
+            Amount = request.Amount,
+            Currency = request.Currency,
+            TransactionId = result.TransactionId,
+            Status = result.Success ? PaymentStatus.Completed : PaymentStatus.Failed,
+            PaymentProvider = "fritid.dk",
+            CreatedAt = DateTime.UtcNow,
+            CompletedAt = result.Success ? DateTime.UtcNow : null,
+            CallbackData = result.Message
+        };
+
+        _db.Payments.Add(payment);
+        await _db.SaveChangesAsync();
+
+        return Ok(new { transactionId = result.TransactionId, status = payment.Status.ToString(), message = result.Message });
+    }
+
+    [HttpPost("callback")]
+    [AllowAnonymous]
+    public async Task<IActionResult> PaymentCallback([FromBody] PaymentCallbackDto callback)
+    {
+        var payment = await _db.Payments.FirstOrDefaultAsync(p => p.TransactionId == callback.TransactionId);
+        if (payment == null) return NotFound("Payment transaction not found");
+
+        payment.CallbackData = callback.Data;
+        if (callback.Status.Equals("completed", StringComparison.OrdinalIgnoreCase))
+        {
+            payment.Status = PaymentStatus.Completed;
+            payment.CompletedAt = DateTime.UtcNow;
+        }
+        else if (callback.Status.Equals("failed", StringComparison.OrdinalIgnoreCase))
+        {
+            payment.Status = PaymentStatus.Failed;
+        }
+
+        await _db.SaveChangesAsync();
+        return Ok(new { message = "Callback processed", status = payment.Status.ToString() });
+    }
+
+    [HttpGet("{transactionId}/status")]
+    [Authorize]
+    public async Task<IActionResult> GetStatus(string transactionId)
+    {
+        var payment = await _db.Payments.FirstOrDefaultAsync(p => p.TransactionId == transactionId);
+        if (payment == null) return NotFound();
+
+        return Ok(new { transactionId = payment.TransactionId, status = payment.Status.ToString(), amount = payment.Amount });
+    }
 }

@@ -25,7 +25,7 @@ public record ResetPasswordDto(string Email);
 
 public interface IAuthService
 {
-  Task<AuthResponseDto?> LoginAsync(LoginDto dto);
-  Task<AuthResponseDto?> RefreshTokenAsync(RefreshTokenDto dto);
-  Task<bool> ResetPasswordRequestAsync(ResetPasswordDto dto);
+    Task<AuthResponseDto?> LoginAsync(LoginDto dto);
+    Task<AuthResponseDto?> RefreshTokenAsync(RefreshTokenDto dto);
+    Task<bool> ResetPasswordRequestAsync(ResetPasswordDto dto);
 }
