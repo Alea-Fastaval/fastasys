@@ -13,36 +13,36 @@ public record SignupSubmissionDto(string Email, string FormDataJson);
 [AllowAnonymous]
 public class SignupController : ControllerBase
 {
-  private readonly InfosysDbContext _db;
-  public SignupController(InfosysDbContext db) => _db = db;
+    private readonly InfosysDbContext _db;
+    public SignupController(InfosysDbContext db) => _db = db;
 
-  [HttpGet("pages")]
-  public async Task<IActionResult> GetPages()
-  {
-    var pages = await _db.SignupPages
-        .Include(p => p.Elements.OrderBy(e => e.OrderIndex))
-        .Where(p => p.IsActive)
-        .OrderBy(p => p.OrderIndex)
-        .AsNoTracking()
-        .ToListAsync();
-    return Ok(pages);
-  }
-
-  [HttpPost("submit")]
-  public async Task<IActionResult> Submit([FromBody] SignupSubmissionDto dto)
-  {
-    var submission = new SignupSubmission
+    [HttpGet("pages")]
+    public async Task<IActionResult> GetPages()
     {
-      Email = dto.Email,
-      FormDataJson = dto.FormDataJson,
-      SubmittedAt = DateTime.UtcNow,
-      IsConfirmed = false,
-      ConfirmationToken = Guid.NewGuid().ToString("N")
-    };
+        var pages = await _db.SignupPages
+            .Include(p => p.Elements.OrderBy(e => e.OrderIndex))
+            .Where(p => p.IsActive)
+            .OrderBy(p => p.OrderIndex)
+            .AsNoTracking()
+            .ToListAsync();
+        return Ok(pages);
+    }
 
-    _db.SignupSubmissions.Add(submission);
-    await _db.SaveChangesAsync();
+    [HttpPost("submit")]
+    public async Task<IActionResult> Submit([FromBody] SignupSubmissionDto dto)
+    {
+        var submission = new SignupSubmission
+        {
+            Email = dto.Email,
+            FormDataJson = dto.FormDataJson,
+            SubmittedAt = DateTime.UtcNow,
+            IsConfirmed = false,
+            ConfirmationToken = Guid.NewGuid().ToString("N")
+        };
 
-    return Ok(new { submissionId = submission.Id, token = submission.ConfirmationToken, message = "Signup submitted successfully. Confirmation pending." });
-  }
+        _db.SignupSubmissions.Add(submission);
+        await _db.SaveChangesAsync();
+
+        return Ok(new { submissionId = submission.Id, token = submission.ConfirmationToken, message = "Signup submitted successfully. Confirmation pending." });
+    }
 }
