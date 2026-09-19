@@ -8,62 +8,62 @@ namespace Fastasys.ApiService.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-  private readonly IAuthService _authService;
+    private readonly IAuthService _authService;
 
-  public AuthController(IAuthService authService)
-  {
-    _authService = authService;
-  }
-
-  [HttpPost("login")]
-  [AllowAnonymous]
-  public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginDto dto)
-  {
-    var response = await _authService.LoginAsync(dto);
-    if (response == null)
+    public AuthController(IAuthService authService)
     {
-      return Unauthorized(new { message = "Invalid username or password" });
+        _authService = authService;
     }
-    return Ok(response);
-  }
 
-  [HttpPost("refresh")]
-  [AllowAnonymous]
-  public async Task<ActionResult<AuthResponseDto>> RefreshToken([FromBody] RefreshTokenDto dto)
-  {
-    var response = await _authService.RefreshTokenAsync(dto);
-    if (response == null)
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginDto dto)
     {
-      return BadRequest(new { message = "Invalid or expired token" });
+        var response = await _authService.LoginAsync(dto);
+        if (response == null)
+        {
+            return Unauthorized(new { message = "Invalid username or password" });
+        }
+        return Ok(response);
     }
-    return Ok(response);
-  }
 
-  [HttpPost("reset-password")]
-  [AllowAnonymous]
-  public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
-  {
-    await _authService.ResetPasswordRequestAsync(dto);
-    return Ok(new { message = "If the email exists, a password reset link has been sent." });
-  }
+    [HttpPost("refresh")]
+    [AllowAnonymous]
+    public async Task<ActionResult<AuthResponseDto>> RefreshToken([FromBody] RefreshTokenDto dto)
+    {
+        var response = await _authService.RefreshTokenAsync(dto);
+        if (response == null)
+        {
+            return BadRequest(new { message = "Invalid or expired token" });
+        }
+        return Ok(response);
+    }
 
-  [HttpPost("logout")]
-  [Authorize]
-  public IActionResult Logout()
-  {
-    // Client side discards JWT token upon logout
-    return Ok(new { message = "Logged out successfully" });
-  }
+    [HttpPost("reset-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+    {
+        await _authService.ResetPasswordRequestAsync(dto);
+        return Ok(new { message = "If the email exists, a password reset link has been sent." });
+    }
 
-  [HttpGet("me")]
-  [Authorize]
-  public IActionResult GetCurrentUser()
-  {
-    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-    var username = User.Identity?.Name;
-    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
-    var roles = User.FindAll(System.Security.Claims.ClaimTypes.Role).Select(c => c.Value);
+    [HttpPost("logout")]
+    [Authorize]
+    public IActionResult Logout()
+    {
+        // Client side discards JWT token upon logout
+        return Ok(new { message = "Logged out successfully" });
+    }
 
-    return Ok(new { userId, username, email, roles });
-  }
+    [HttpGet("me")]
+    [Authorize]
+    public IActionResult GetCurrentUser()
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var username = User.Identity?.Name;
+        var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+        var roles = User.FindAll(System.Security.Claims.ClaimTypes.Role).Select(c => c.Value);
+
+        return Ok(new { userId, username, email, roles });
+    }
 }
